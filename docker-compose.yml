@@ -1,0 +1,53 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: iams-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-iams}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-iams}
+      POSTGRES_DB: ${POSTGRES_DB:-iams}
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      - iams_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-iams} -d ${POSTGRES_DB:-iams}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  api:
+    build:
+      context: .
+      dockerfile: docker/api.Dockerfile
+    container_name: iams-api
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      NODE_ENV: production
+      PORT: 4000
+      DATABASE_URL: postgresql://${POSTGRES_USER:-iams}:${POSTGRES_PASSWORD:-iams}@postgres:5432/${POSTGRES_DB:-iams}?schema=public
+      SESSION_SECRET: ${SESSION_SECRET:-change-this-to-a-long-random-string-min-32-chars}
+      CORS_ORIGIN: ${CORS_ORIGIN:-http://localhost:5173}
+      LOG_LEVEL: info
+    ports:
+      - "4000:4000"
+
+  web:
+    build:
+      context: .
+      dockerfile: docker/web.Dockerfile
+    container_name: iams-web
+    restart: unless-stopped
+    depends_on:
+      - api
+    ports:
+      - "5173:80"
+    environment:
+      VITE_API_URL: http://localhost:4000/api
+
+volumes:
+  iams_pgdata:

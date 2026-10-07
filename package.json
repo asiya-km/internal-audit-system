@@ -1,0 +1,28 @@
+{
+  "name": "iams",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Internal Audit Management System",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev:web": "npm run dev -w @iams/web",
+    "dev:api": "npm run dev -w @iams/api",
+    "build": "npm run build -w @iams/shared && npm run build -w @iams/api && npm run build -w @iams/web",
+    "build:web": "npm run build -w @iams/web",
+    "build:api": "npm run build -w @iams/api",
+    "build:shared": "npm run build -w @iams/shared",
+    "lint": "npm run lint -w @iams/web && npm run lint -w @iams/api",
+    "typecheck": "npm run typecheck -w @iams/shared && npm run typecheck -w @iams/api && npm run typecheck -w @iams/web",
+    "test": "npm run test -w @iams/api",
+    "db:generate": "npm run db:generate -w @iams/api",
+    "db:migrate": "npm run db:migrate -w @iams/api",
+    "db:seed": "npm run db:seed -w @iams/api",
+    "db:reset": "npm run db:reset -w @iams/api"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
