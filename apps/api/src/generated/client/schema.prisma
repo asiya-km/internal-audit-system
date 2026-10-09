@@ -2,8 +2,9 @@
 // PostgreSQL datasource configured via DATABASE_URL env var.
 
 generator client {
-  provider = "prisma-client-js"
-  output   = "../src/generated/client"
+  provider      = "prisma-client-js"
+  output        = "../src/generated/client"
+  binaryTargets = ["native", "linux-musl"]
 }
 
 datasource db {

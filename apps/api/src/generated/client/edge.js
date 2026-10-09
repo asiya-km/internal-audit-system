@@ -164,7 +164,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "/tmp/cc-agent/71803317/project/apps/api/src/generated/client",
+      "value": "D:\\Projects\\internal-audit-system\\apps\\api\\src\\generated\\client",
       "fromEnvVar": null
     },
     "config": {
@@ -173,17 +173,20 @@ const config = {
     "binaryTargets": [
       {
         "fromEnvVar": null,
-        "value": "debian-openssl-3.0.x",
+        "value": "windows",
         "native": true
+      },
+      {
+        "fromEnvVar": null,
+        "value": "linux-musl"
       }
     ],
     "previewFeatures": [],
-    "sourceFilePath": "/tmp/cc-agent/71803317/project/apps/api/prisma/schema.prisma",
+    "sourceFilePath": "D:\\Projects\\internal-audit-system\\apps\\api\\prisma\\schema.prisma",
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
-    "rootEnvPath": null,
-    "schemaEnvPath": "../../../../../.env"
+    "rootEnvPath": null
   },
   "relativePath": "../../../prisma",
   "clientVersion": "5.22.0",
@@ -201,8 +204,8 @@ const config = {
       }
     }
   },
-  "inlineSchema": "// Prisma schema for IAMS — Internal Audit Management System\n// PostgreSQL datasource configured via DATABASE_URL env var.\n\ngenerator client {\n  provider = \"prisma-client-js\"\n  output   = \"../src/generated/client\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n  url      = env(\"DATABASE_URL\")\n}\n\n// ---- Authentication & Authorization ----\n\nmodel User {\n  id           String    @id @default(uuid()) @db.Uuid\n  firstName    String\n  lastName     String\n  email        String    @unique\n  passwordHash String\n  isActive     Boolean   @default(true)\n  lastLoginAt  DateTime?\n  createdAt    DateTime  @default(now())\n  updatedAt    DateTime  @updatedAt\n\n  userRoles UserRole[]\n\n  @@index([email])\n  @@index([isActive])\n}\n\nmodel Role {\n  id          String   @id @default(uuid()) @db.Uuid\n  name        String   @unique\n  description String?\n  createdAt   DateTime @default(now())\n  updatedAt   DateTime @updatedAt\n\n  userRoles       UserRole[]\n  rolePermissions RolePermission[]\n\n  @@index([name])\n}\n\nmodel Permission {\n  id          String   @id @default(uuid()) @db.Uuid\n  name        String   @unique\n  description String?\n  createdAt   DateTime @default(now())\n  updatedAt   DateTime @updatedAt\n\n  rolePermissions RolePermission[]\n\n  @@index([name])\n}\n\nmodel UserRole {\n  userId     String   @db.Uuid\n  roleId     String   @db.Uuid\n  assignedAt DateTime @default(now())\n\n  user User @relation(fields: [userId], references: [id], onDelete: Cascade)\n  role Role @relation(fields: [roleId], references: [id], onDelete: Cascade)\n\n  @@id([userId, roleId])\n  @@index([roleId])\n}\n\nmodel RolePermission {\n  roleId       String   @db.Uuid\n  permissionId String   @db.Uuid\n  assignedAt   DateTime @default(now())\n\n  role       Role       @relation(fields: [roleId], references: [id], onDelete: Cascade)\n  permission Permission @relation(fields: [permissionId], references: [id], onDelete: Cascade)\n\n  @@id([roleId, permissionId])\n  @@index([permissionId])\n}\n",
-  "inlineSchemaHash": "609d8d2083087f97d7a37cbbc816084741fe2c795bd015a343b3bffee16e3d50",
+  "inlineSchema": "// Prisma schema for IAMS — Internal Audit Management System\n// PostgreSQL datasource configured via DATABASE_URL env var.\n\ngenerator client {\n  provider      = \"prisma-client-js\"\n  output        = \"../src/generated/client\"\n  binaryTargets = [\"native\", \"linux-musl\"]\n}\n\ndatasource db {\n  provider = \"postgresql\"\n  url      = env(\"DATABASE_URL\")\n}\n\n// ---- Authentication & Authorization ----\n\nmodel User {\n  id           String    @id @default(uuid()) @db.Uuid\n  firstName    String\n  lastName     String\n  email        String    @unique\n  passwordHash String\n  isActive     Boolean   @default(true)\n  lastLoginAt  DateTime?\n  createdAt    DateTime  @default(now())\n  updatedAt    DateTime  @updatedAt\n\n  userRoles UserRole[]\n\n  @@index([email])\n  @@index([isActive])\n}\n\nmodel Role {\n  id          String   @id @default(uuid()) @db.Uuid\n  name        String   @unique\n  description String?\n  createdAt   DateTime @default(now())\n  updatedAt   DateTime @updatedAt\n\n  userRoles       UserRole[]\n  rolePermissions RolePermission[]\n\n  @@index([name])\n}\n\nmodel Permission {\n  id          String   @id @default(uuid()) @db.Uuid\n  name        String   @unique\n  description String?\n  createdAt   DateTime @default(now())\n  updatedAt   DateTime @updatedAt\n\n  rolePermissions RolePermission[]\n\n  @@index([name])\n}\n\nmodel UserRole {\n  userId     String   @db.Uuid\n  roleId     String   @db.Uuid\n  assignedAt DateTime @default(now())\n\n  user User @relation(fields: [userId], references: [id], onDelete: Cascade)\n  role Role @relation(fields: [roleId], references: [id], onDelete: Cascade)\n\n  @@id([userId, roleId])\n  @@index([roleId])\n}\n\nmodel RolePermission {\n  roleId       String   @db.Uuid\n  permissionId String   @db.Uuid\n  assignedAt   DateTime @default(now())\n\n  role       Role       @relation(fields: [roleId], references: [id], onDelete: Cascade)\n  permission Permission @relation(fields: [permissionId], references: [id], onDelete: Cascade)\n\n  @@id([roleId, permissionId])\n  @@index([permissionId])\n}\n",
+  "inlineSchemaHash": "fde27a4f98477f2c23895a533c9ffebc59834ce52d83b6ed13a771b94b47664d",
   "copyEngine": true
 }
 config.dirname = '/'
