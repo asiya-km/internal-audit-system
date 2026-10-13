@@ -10,15 +10,15 @@ import { DashboardPage } from './pages/DashboardPage';
 import { AuditPlanningPage } from './pages/AuditPlanningPage';
 import { AuditUniversePage } from './pages/AuditUniversePage';
 import { EngagementsPage } from './pages/EngagementsPage';
-import { WorkingPapersPage } from './pages/WorkingPapersPage';
+import { EvidenceTrackerPage } from './pages/EvidenceTrackerPage';
 import { FindingsPage } from './pages/FindingsPage';
-import { CorrectiveActionsPage } from './pages/CorrectiveActionsPage';
-import { FollowUpPage } from './pages/FollowUpPage';
+import { ActionPlansPage } from './pages/ActionPlansPage';
+import { AuditRiskAssessmentPage } from './pages/AuditRiskAssessment';
+import { ControlTestingPage } from './pages/ControlTesting';
 import { ReportsPage } from './pages/ReportsPage';
-import { AnalyticsPage } from './pages/AnalyticsPage';
 import { AdministrationPage } from './pages/AdministrationPage';
+import { AssuranceMapPage } from './pages/AssuranceMapPage';
 import { EmptyState } from './components/ui/EmptyState';
-
 function LoginRoute() {
   const { user, loading } = useAuth();
   if (loading) return null;
@@ -55,12 +55,13 @@ export default function App() {
                 <Route path="/audit-planning" element={<AuditPlanningPage />} />
                 <Route path="/audit-universe" element={<AuditUniversePage />} />
                 <Route path="/engagements" element={<EngagementsPage />} />
-                <Route path="/working-papers" element={<WorkingPapersPage />} />
+                <Route path="/evidence-tracker" element={<EvidenceTrackerPage />} />
                 <Route path="/findings" element={<FindingsPage />} />
-                <Route path="/corrective-actions" element={<CorrectiveActionsPage />} />
-                <Route path="/follow-up" element={<FollowUpPage />} />
+                <Route path="/audit-risk-assessment" element={<AuditRiskAssessmentPage />} />
+                <Route path="/action-plans" element={<ActionPlansPage />} />
+                <Route path="/control-testing" element={<ControlTestingPage />} />
                 <Route path="/reports" element={<ReportsPage />} />
-                <Route path="/analytics" element={<AnalyticsPage />} />
+                <Route path="/assurance-map" element={<AssuranceMapPage />} />
                 <Route path="/administration" element={<AdministrationPage />} />
                 <Route path="*" element={<NotFoundPage />} />
               </Route>

@@ -15,15 +15,16 @@ import {
 
 export const navItems: NavItem[] = [
   { label: 'Dashboard', path: '/dashboard', icon: 'LayoutDashboard' },
-  { label: 'Audit Planning', path: '/audit-planning', icon: 'CalendarCheck' },
   { label: 'Audit Universe', path: '/audit-universe', icon: 'Building2' },
-  { label: 'Engagements', path: '/engagements', icon: 'FolderKanban' },
-  { label: 'Working Papers', path: '/working-papers', icon: 'FileText' },
-  { label: 'Findings', path: '/findings', icon: 'Flag' },
-  { label: 'Corrective Actions', path: '/corrective-actions', icon: 'CheckSquare' },
-  { label: 'Follow-up', path: '/follow-up', icon: 'RefreshCw' },
+  { label: 'Annual Audit Plan', path: '/audit-planning', icon: 'CalendarCheck' },
+  { label: 'Risk Assessment', path: '/audit-risk-assessment', icon: 'BarChart3' },
+  { label: 'Control Testing', path: '/control-testing', icon: 'CheckSquare' },
+  { label: 'Audit Findings', path: '/findings', icon: 'Flag' },
+  { label: 'Audit Engagements', path: '/engagements', icon: 'FolderKanban' },
+  { label: 'Action Plans', path: '/action-plans', icon: 'CheckSquare' },
+  { label: 'Assurance Map', path: '/assurance-map', icon: 'BarChart3' },
+  { label: 'Evidence Tracker', path: '/evidence-tracker', icon: 'FileText' },
   { label: 'Reports', path: '/reports', icon: 'BarChart3' },
-  { label: 'Analytics', path: '/analytics', icon: 'TrendingUp' },
   { label: 'Administration', path: '/administration', icon: 'Settings' },
 ];
 
