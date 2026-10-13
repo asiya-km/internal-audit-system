@@ -1,6 +1,13 @@
 import dotenv from 'dotenv';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
-dotenv.config();
+const currentFile = fileURLToPath(import.meta.url);
+const currentDir = path.dirname(currentFile);
+
+dotenv.config({
+  path: path.resolve(currentDir, '../../../../.env'),
+});
 
 function required(key: string, fallback?: string): string {
   const value = process.env[key] ?? fallback;

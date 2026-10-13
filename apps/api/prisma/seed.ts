@@ -1,8 +1,15 @@
 import { PrismaClient } from '../src/generated/client/index.js';
 import bcrypt from 'bcryptjs';
 import dotenv from 'dotenv';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
-dotenv.config();
+const currentFile = fileURLToPath(import.meta.url);
+const currentDir = path.dirname(currentFile);
+
+dotenv.config({
+  path: path.resolve(currentDir, '../../../.env'),
+});
 
 const prisma = new PrismaClient();
 
