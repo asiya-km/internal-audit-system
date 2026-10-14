@@ -11,15 +11,44 @@ import healthRoutes from './routes/health.routes.js';
 import authRoutes from './routes/auth.routes.js';
 import adminRoutes from './routes/admin.routes.js';
 
+function buildHelmetConfig() {
+  if (config.isProduction) {
+    return helmet({
+      hsts: { maxAge: 31536000, includeSubDomains: true, preload: true },
+      contentSecurityPolicy: {
+        directives: {
+          defaultSrc: ["'self'"],
+          scriptSrc: ["'self'"],
+          styleSrc: ["'self'", "'unsafe-inline'"],
+          imgSrc: ["'self'", 'data:', 'https:'],
+          connectSrc: ["'self'"],
+          fontSrc: ["'self'", 'https:'],
+          objectSrc: ["'none'"],
+          frameSrc: ["'none'"],
+        },
+      },
+      noSniff: true,
+      referrerPolicy: { policy: 'strict-origin-when-cross-origin' },
+    });
+  }
+  return helmet({ contentSecurityPolicy: false, hsts: false });
+}
+
 export function createApp(): express.Express {
   const app = express();
 
+  // Trust first proxy so req.ip reflects the real client behind nginx/Docker
+  app.set('trust proxy', 1);
+
   // ---- Security middleware ----
-  app.use(helmet());
+  app.use(buildHelmetConfig());
+
   app.use(
     cors({
       origin: config.corsOrigin,
       credentials: true,
+      methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+      allowedHeaders: ['Content-Type', 'Authorization', 'X-Client-Info', 'Apikey'],
     }),
   );
   app.use(express.json({ limit: '1mb' }));

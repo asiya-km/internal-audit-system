@@ -1,4 +1,7 @@
 services:
+  # ---- PostgreSQL ----
+  # Port bound to 127.0.0.1 so it is reachable for local development
+  # but NOT exposed to external networks in production.
   postgres:
     image: postgres:16-alpine
     container_name: iams-postgres
@@ -8,7 +11,7 @@ services:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-iams}
       POSTGRES_DB: ${POSTGRES_DB:-iams}
     ports:
-      - "${POSTGRES_PORT:-5432}:5432"
+      - "127.0.0.1:${POSTGRES_PORT:-5432}:5432"
     volumes:
       - iams_pgdata:/var/lib/postgresql/data
     healthcheck:
@@ -16,7 +19,12 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+    networks:
+      - iams-net
 
+  # ---- API (production container) ----
+  # SESSION_SECRET has NO fallback — the application will refuse to
+  # start in production without a strong secret.
   api:
     build:
       context: .
@@ -30,12 +38,15 @@ services:
       NODE_ENV: production
       PORT: 4000
       DATABASE_URL: postgresql://${POSTGRES_USER:-iams}:${POSTGRES_PASSWORD:-iams}@postgres:5432/${POSTGRES_DB:-iams}?schema=public
-      SESSION_SECRET: ${SESSION_SECRET:-change-this-to-a-long-random-string-min-32-chars}
-      CORS_ORIGIN: ${CORS_ORIGIN:-http://localhost:5173}
+      SESSION_SECRET: ${SESSION_SECRET:?SESSION_SECRET is required for production}
+      CORS_ORIGIN: ${CORS_ORIGIN:?CORS_ORIGIN is required}
       LOG_LEVEL: info
     ports:
       - "4000:4000"
+    networks:
+      - iams-net
 
+  # ---- Web (nginx-served SPA) ----
   web:
     build:
       context: .
@@ -46,8 +57,12 @@ services:
       - api
     ports:
       - "5173:80"
-    environment:
-      VITE_API_URL: http://localhost:4000/api
+    networks:
+      - iams-net
+
+networks:
+  iams-net:
+    driver: bridge
 
 volumes:
   iams_pgdata:

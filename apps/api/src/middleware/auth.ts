@@ -3,7 +3,7 @@ import jwt from 'jsonwebtoken';
 import { config } from '../config/env.js';
 import { AuthenticationError, AuthorizationError } from '../utils/errors.js';
 import { prisma } from '../config/db.js';
-import type { UserDto } from '@iams/shared';
+import { recordAudit } from '../services/audit.service.js';
 
 export interface AuthenticatedRequest extends Request {
   user?: AuthUser;
@@ -57,6 +57,12 @@ async function loadUserPermissions(userId: string): Promise<AuthUser | null> {
   };
 }
 
+function clientIp(req: Request): string | undefined {
+  const forwarded = req.headers['x-forwarded-for'];
+  if (typeof forwarded === 'string') return forwarded.split(',')[0].trim();
+  return req.ip;
+}
+
 export async function authenticate(
   req: AuthenticatedRequest,
   res: Response,
@@ -98,22 +104,18 @@ export function requirePermission(permission: string) {
       return;
     }
     if (!req.user.permissions.includes(permission)) {
+      recordAudit({
+        action: 'permission_denied',
+        category: 'authorization',
+        userId: req.user.id,
+        ip: clientIp(req),
+        userAgent: req.headers['user-agent'],
+        metadata: { requiredPermission: permission, path: req.path },
+        success: false,
+      });
       next(new AuthorizationError());
       return;
     }
     next();
-  };
-}
-
-export function toUserDto(user: AuthUser): UserDto {
-  return {
-    id: user.id,
-    firstName: user.firstName,
-    lastName: user.lastName,
-    email: user.email,
-    isActive: true,
-    lastLoginAt: null,
-    roles: [],
-    permissions: user.permissions,
   };
 }

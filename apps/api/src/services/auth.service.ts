@@ -30,7 +30,7 @@ export class AuthService {
     await this.users.updateLastLogin(user.id);
 
     const token = jwt.sign({ sub: user.id }, config.sessionSecret, {
-      expiresIn: 8 * 60 * 60,
+      expiresIn: Math.floor(config.cookieMaxAgeMs / 1000),
     });
 
     logger.info('User logged in', { userId: user.id, email: user.email });
