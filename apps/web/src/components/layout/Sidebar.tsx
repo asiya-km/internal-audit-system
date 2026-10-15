@@ -65,7 +65,7 @@ export function Sidebar({ open, onClose }: SidebarProps) {
         </nav>
 
         <div className="border-t border-neutral-200 px-4 py-3">
-          <p className="text-xs text-neutral-400">IAMS v0.1.0 — Phase 1</p>
+          <p className="text-xs text-neutral-400">IAMS v0.1.0 — Phase 3</p>
         </div>
       </aside>
     </>

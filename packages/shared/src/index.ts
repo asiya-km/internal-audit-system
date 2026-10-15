@@ -70,3 +70,75 @@ export interface NavItem {
   icon: string;
   permission?: string;
 }
+
+// ---- Dashboard ----
+
+export type MetricAvailability = 'available' | 'not_available';
+
+export interface KpiMetric {
+  key: string;
+  label: string;
+  value: number | null;
+  availability: MetricAvailability;
+  description: string;
+  trend?: { direction: 'up' | 'down' | 'flat'; percentage: number } | null;
+}
+
+export interface ChartDataPoint {
+  label: string;
+  value: number;
+  secondaryValue?: number;
+  category?: string;
+}
+
+export interface AnalyticsPanel {
+  key: string;
+  title: string;
+  availability: MetricAvailability;
+  description: string;
+  data: ChartDataPoint[];
+  chartType: 'bar' | 'pie' | 'line' | 'heatmap' | 'calendar' | 'grouped-bar';
+}
+
+export interface PriorityItem {
+  id: string;
+  reference: string;
+  title: string;
+  owner: string;
+  dueDate: string | null;
+  priority: 'critical' | 'high' | 'medium' | 'low';
+  status: 'open' | 'in_progress' | 'overdue' | 'closed' | 'pending';
+  sourceModule: string;
+}
+
+export interface TrendPoint {
+  period: string;
+  coverage: number;
+  target: number;
+}
+
+export interface DashboardFilters {
+  reportingYear?: string;
+  auditCycle?: string;
+  riskArea?: string;
+  auditOwner?: string;
+  status?: string;
+}
+
+export interface DashboardMetricsResponse {
+  kpis: KpiMetric[];
+  panels: AnalyticsPanel[];
+  priorityItems: PriorityItem[];
+  trend: {
+    availability: MetricAvailability;
+    data: TrendPoint[];
+    description: string;
+  };
+  filterOptions: {
+    reportingYears: string[];
+    auditCycles: string[];
+    riskAreas: string[];
+    auditOwners: string[];
+    statuses: string[];
+  };
+}

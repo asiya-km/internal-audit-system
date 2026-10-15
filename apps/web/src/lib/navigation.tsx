@@ -15,6 +15,7 @@ import {
   Network,
   SlidersHorizontal,
   ClipboardPaste,
+  Settings2,
 } from 'lucide-react';
 
 export const navItems: NavItem[] = [
@@ -30,6 +31,7 @@ export const navItems: NavItem[] = [
   { label: 'Evidence Tracker', path: '/evidence-tracker', icon: 'FileText' },
   { label: 'Reports', path: '/reports', icon: 'BarChart3' },
   { label: 'Administration', path: '/administration', icon: 'Settings' },
+  { label: 'Settings', path: '/settings', icon: 'Settings2' },
 ];
 
 const iconMap = {
@@ -48,6 +50,7 @@ const iconMap = {
   ClipboardCheck,
   SlidersHorizontal,
   ClipboardPaste,
+  Settings2,
 } as const;
 
 export type IconName = keyof typeof iconMap;

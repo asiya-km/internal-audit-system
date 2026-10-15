@@ -18,6 +18,7 @@ import { ControlTestingPage } from './pages/ControlTesting';
 import { ReportsPage } from './pages/ReportsPage';
 import { AdministrationPage } from './pages/AdministrationPage';
 import { AssuranceMapPage } from './pages/AssuranceMapPage';
+import { SettingsPage } from './pages/SettingsPage';
 import { EmptyState } from './components/ui/EmptyState';
 function LoginRoute() {
   const { user, loading } = useAuth();
@@ -63,6 +64,7 @@ export default function App() {
                 <Route path="/reports" element={<ReportsPage />} />
                 <Route path="/assurance-map" element={<AssuranceMapPage />} />
                 <Route path="/administration" element={<AdministrationPage />} />
+                <Route path="/settings" element={<SettingsPage />} />
                 <Route path="*" element={<NotFoundPage />} />
               </Route>
 

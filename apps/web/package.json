@@ -14,10 +14,12 @@
   "dependencies": {
     "@iams/shared": "*",
     "@tanstack/react-query": "^5.51.0",
+    "@types/recharts": "^1.8.29",
     "lucide-react": "^0.446.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "react-router-dom": "^6.26.0"
+    "react-router-dom": "^6.26.0",
+    "recharts": "^3.10.1"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^6.4.0",

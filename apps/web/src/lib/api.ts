@@ -4,6 +4,7 @@ import type {
   LoginResponse,
   UserDto,
   HealthResponse,
+  DashboardMetricsResponse,
 } from '@iams/shared';
 
 const API_BASE = import.meta.env.VITE_API_URL ?? '/api';
@@ -54,4 +55,5 @@ export const api = {
   logout: () =>
     request<{ message: string }>('/auth/logout', { method: 'POST' }),
   me: () => request<UserDto>('/auth/me'),
+  getDashboardMetrics: (path: string) => request<DashboardMetricsResponse>(path),
 };
