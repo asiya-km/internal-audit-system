@@ -2,7 +2,7 @@ import { prisma } from '../config/db.js';
 import { logger } from '../utils/logger.js';
 import type { Prisma } from '../generated/client/index.js';
 
-export type AuditCategory = 'auth' | 'authorization' | 'admin' | 'data_access';
+export type AuditCategory = 'auth' | 'authorization' | 'admin' | 'data_access' | 'audit_universe';
 
 export interface AuditEntry {
   action: string;

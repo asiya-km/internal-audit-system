@@ -162,6 +162,23 @@ exports.Prisma.RolePermissionScalarFieldEnum = {
   assignedAt: 'assignedAt'
 };
 
+exports.Prisma.AuditEntityScalarFieldEnum = {
+  id: 'id',
+  code: 'code',
+  name: 'name',
+  description: 'description',
+  entityType: 'entityType',
+  status: 'status',
+  parentId: 'parentId',
+  ownerName: 'ownerName',
+  responsibleName: 'responsibleName',
+  classification: 'classification',
+  createdById: 'createdById',
+  updatedById: 'updatedById',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.AuditLogScalarFieldEnum = {
   id: 'id',
   action: 'action',
@@ -199,7 +216,20 @@ exports.Prisma.JsonNullValueFilter = {
   JsonNull: Prisma.JsonNull,
   AnyNull: Prisma.AnyNull
 };
+exports.AuditEntityType = exports.$Enums.AuditEntityType = {
+  DEPARTMENT: 'DEPARTMENT',
+  BUSINESS_PROCESS: 'BUSINESS_PROCESS',
+  INFORMATION_SYSTEM: 'INFORMATION_SYSTEM',
+  PROJECT: 'PROJECT',
+  PROGRAM: 'PROGRAM',
+  OTHER: 'OTHER'
+};
 
+exports.AuditEntityStatus = exports.$Enums.AuditEntityStatus = {
+  ACTIVE: 'ACTIVE',
+  INACTIVE: 'INACTIVE',
+  ARCHIVED: 'ARCHIVED'
+};
 
 exports.Prisma.ModelName = {
   User: 'User',
@@ -207,6 +237,7 @@ exports.Prisma.ModelName = {
   Permission: 'Permission',
   UserRole: 'UserRole',
   RolePermission: 'RolePermission',
+  AuditEntity: 'AuditEntity',
   AuditLog: 'AuditLog'
 };
 

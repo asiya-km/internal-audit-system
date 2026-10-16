@@ -27,6 +27,9 @@ model User {
 
   userRoles UserRole[]
 
+  createdAuditEntities AuditEntity[] @relation("AuditEntityCreator")
+  updatedAuditEntities AuditEntity[] @relation("AuditEntityUpdater")
+
   @@index([email])
   @@index([isActive])
 }
@@ -78,6 +81,50 @@ model RolePermission {
 
   @@id([roleId, permissionId])
   @@index([permissionId])
+}
+
+// ---- Audit Universe ----
+
+enum AuditEntityType {
+  DEPARTMENT
+  BUSINESS_PROCESS
+  INFORMATION_SYSTEM
+  PROJECT
+  PROGRAM
+  OTHER
+}
+
+enum AuditEntityStatus {
+  ACTIVE
+  INACTIVE
+  ARCHIVED
+}
+
+model AuditEntity {
+  id              String            @id @default(uuid()) @db.Uuid
+  code            String            @unique
+  name            String
+  description     String?
+  entityType      AuditEntityType
+  status          AuditEntityStatus @default(ACTIVE)
+  parentId        String?           @db.Uuid
+  ownerName       String?
+  responsibleName String?
+  classification  String?
+  createdById     String?           @db.Uuid
+  updatedById     String?           @db.Uuid
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+
+  parent    AuditEntity?  @relation("EntityHierarchy", fields: [parentId], references: [id], onDelete: Restrict)
+  children  AuditEntity[] @relation("EntityHierarchy")
+  createdBy User?         @relation("AuditEntityCreator", fields: [createdById], references: [id], onDelete: SetNull)
+  updatedBy User?         @relation("AuditEntityUpdater", fields: [updatedById], references: [id], onDelete: SetNull)
+
+  @@index([parentId])
+  @@index([entityType])
+  @@index([status])
+  @@index([name])
 }
 
 // ---- Audit Logging ----

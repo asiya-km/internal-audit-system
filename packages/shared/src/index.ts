@@ -142,3 +142,70 @@ export interface DashboardMetricsResponse {
     statuses: string[];
   };
 }
+
+// ---- Audit Universe ----
+
+export type AuditEntityType = 'DEPARTMENT' | 'BUSINESS_PROCESS' | 'INFORMATION_SYSTEM' | 'PROJECT' | 'PROGRAM' | 'OTHER';
+export type AuditEntityStatus = 'ACTIVE' | 'INACTIVE' | 'ARCHIVED';
+
+export interface AuditEntityDto {
+  id: string;
+  code: string;
+  name: string;
+  description: string | null;
+  entityType: AuditEntityType;
+  status: AuditEntityStatus;
+  parentId: string | null;
+  parentName: string | null;
+  ownerName: string | null;
+  responsibleName: string | null;
+  classification: string | null;
+  childCount: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface AuditEntityDetailDto extends AuditEntityDto {
+  children: AuditEntityDto[];
+  createdBy: string | null;
+  updatedBy: string | null;
+}
+
+export interface AuditEntityListResponse extends PaginatedData<AuditEntityDto> {
+  filters: {
+    entityTypes: AuditEntityType[];
+    statuses: AuditEntityStatus[];
+  };
+}
+
+export interface AuditEntityCreateInput {
+  code: string;
+  name: string;
+  description?: string;
+  entityType: AuditEntityType;
+  parentId?: string;
+  ownerName?: string;
+  responsibleName?: string;
+  classification?: string;
+}
+
+export interface AuditEntityUpdateInput {
+  name?: string;
+  description?: string | null;
+  entityType?: AuditEntityType;
+  parentId?: string | null;
+  ownerName?: string | null;
+  responsibleName?: string | null;
+  classification?: string | null;
+}
+
+export interface AuditEntityListQuery {
+  page?: number;
+  pageSize?: number;
+  sortBy?: string;
+  sortOrder?: 'asc' | 'desc';
+  search?: string;
+  entityType?: AuditEntityType;
+  status?: AuditEntityStatus;
+  parentId?: string;
+}

@@ -39,10 +39,49 @@ export type UserRole = $Result.DefaultSelection<Prisma.$UserRolePayload>
  */
 export type RolePermission = $Result.DefaultSelection<Prisma.$RolePermissionPayload>
 /**
+ * Model AuditEntity
+ * 
+ */
+export type AuditEntity = $Result.DefaultSelection<Prisma.$AuditEntityPayload>
+/**
  * Model AuditLog
  * 
  */
 export type AuditLog = $Result.DefaultSelection<Prisma.$AuditLogPayload>
+
+/**
+ * Enums
+ */
+export namespace $Enums {
+  export const AuditEntityType: {
+  DEPARTMENT: 'DEPARTMENT',
+  BUSINESS_PROCESS: 'BUSINESS_PROCESS',
+  INFORMATION_SYSTEM: 'INFORMATION_SYSTEM',
+  PROJECT: 'PROJECT',
+  PROGRAM: 'PROGRAM',
+  OTHER: 'OTHER'
+};
+
+export type AuditEntityType = (typeof AuditEntityType)[keyof typeof AuditEntityType]
+
+
+export const AuditEntityStatus: {
+  ACTIVE: 'ACTIVE',
+  INACTIVE: 'INACTIVE',
+  ARCHIVED: 'ARCHIVED'
+};
+
+export type AuditEntityStatus = (typeof AuditEntityStatus)[keyof typeof AuditEntityStatus]
+
+}
+
+export type AuditEntityType = $Enums.AuditEntityType
+
+export const AuditEntityType: typeof $Enums.AuditEntityType
+
+export type AuditEntityStatus = $Enums.AuditEntityStatus
+
+export const AuditEntityStatus: typeof $Enums.AuditEntityStatus
 
 /**
  * ##  Prisma Client ʲˢ
@@ -216,6 +255,16 @@ export class PrismaClient<
     * ```
     */
   get rolePermission(): Prisma.RolePermissionDelegate<ExtArgs>;
+
+  /**
+   * `prisma.auditEntity`: Exposes CRUD operations for the **AuditEntity** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more AuditEntities
+    * const auditEntities = await prisma.auditEntity.findMany()
+    * ```
+    */
+  get auditEntity(): Prisma.AuditEntityDelegate<ExtArgs>;
 
   /**
    * `prisma.auditLog`: Exposes CRUD operations for the **AuditLog** model.
@@ -672,6 +721,7 @@ export namespace Prisma {
     Permission: 'Permission',
     UserRole: 'UserRole',
     RolePermission: 'RolePermission',
+    AuditEntity: 'AuditEntity',
     AuditLog: 'AuditLog'
   };
 
@@ -688,7 +738,7 @@ export namespace Prisma {
 
   export type TypeMap<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, ClientOptions = {}> = {
     meta: {
-      modelProps: "user" | "role" | "permission" | "userRole" | "rolePermission" | "auditLog"
+      modelProps: "user" | "role" | "permission" | "userRole" | "rolePermission" | "auditEntity" | "auditLog"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1042,6 +1092,76 @@ export namespace Prisma {
           }
         }
       }
+      AuditEntity: {
+        payload: Prisma.$AuditEntityPayload<ExtArgs>
+        fields: Prisma.AuditEntityFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.AuditEntityFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AuditEntityPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.AuditEntityFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AuditEntityPayload>
+          }
+          findFirst: {
+            args: Prisma.AuditEntityFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AuditEntityPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.AuditEntityFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AuditEntityPayload>
+          }
+          findMany: {
+            args: Prisma.AuditEntityFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AuditEntityPayload>[]
+          }
+          create: {
+            args: Prisma.AuditEntityCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AuditEntityPayload>
+          }
+          createMany: {
+            args: Prisma.AuditEntityCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.AuditEntityCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AuditEntityPayload>[]
+          }
+          delete: {
+            args: Prisma.AuditEntityDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AuditEntityPayload>
+          }
+          update: {
+            args: Prisma.AuditEntityUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AuditEntityPayload>
+          }
+          deleteMany: {
+            args: Prisma.AuditEntityDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.AuditEntityUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.AuditEntityUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AuditEntityPayload>
+          }
+          aggregate: {
+            args: Prisma.AuditEntityAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateAuditEntity>
+          }
+          groupBy: {
+            args: Prisma.AuditEntityGroupByArgs<ExtArgs>
+            result: $Utils.Optional<AuditEntityGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.AuditEntityCountArgs<ExtArgs>
+            result: $Utils.Optional<AuditEntityCountAggregateOutputType> | number
+          }
+        }
+      }
       AuditLog: {
         payload: Prisma.$AuditLogPayload<ExtArgs>
         fields: Prisma.AuditLogFieldRefs
@@ -1274,10 +1394,14 @@ export namespace Prisma {
 
   export type UserCountOutputType = {
     userRoles: number
+    createdAuditEntities: number
+    updatedAuditEntities: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     userRoles?: boolean | UserCountOutputTypeCountUserRolesArgs
+    createdAuditEntities?: boolean | UserCountOutputTypeCountCreatedAuditEntitiesArgs
+    updatedAuditEntities?: boolean | UserCountOutputTypeCountUpdatedAuditEntitiesArgs
   }
 
   // Custom InputTypes
@@ -1296,6 +1420,20 @@ export namespace Prisma {
    */
   export type UserCountOutputTypeCountUserRolesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: UserRoleWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountCreatedAuditEntitiesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AuditEntityWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountUpdatedAuditEntitiesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AuditEntityWhereInput
   }
 
 
@@ -1367,6 +1505,37 @@ export namespace Prisma {
    */
   export type PermissionCountOutputTypeCountRolePermissionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: RolePermissionWhereInput
+  }
+
+
+  /**
+   * Count Type AuditEntityCountOutputType
+   */
+
+  export type AuditEntityCountOutputType = {
+    children: number
+  }
+
+  export type AuditEntityCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    children?: boolean | AuditEntityCountOutputTypeCountChildrenArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * AuditEntityCountOutputType without action
+   */
+  export type AuditEntityCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AuditEntityCountOutputType
+     */
+    select?: AuditEntityCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * AuditEntityCountOutputType without action
+   */
+  export type AuditEntityCountOutputTypeCountChildrenArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AuditEntityWhereInput
   }
 
 
@@ -1571,6 +1740,8 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     userRoles?: boolean | User$userRolesArgs<ExtArgs>
+    createdAuditEntities?: boolean | User$createdAuditEntitiesArgs<ExtArgs>
+    updatedAuditEntities?: boolean | User$updatedAuditEntitiesArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -1600,6 +1771,8 @@ export namespace Prisma {
 
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     userRoles?: boolean | User$userRolesArgs<ExtArgs>
+    createdAuditEntities?: boolean | User$createdAuditEntitiesArgs<ExtArgs>
+    updatedAuditEntities?: boolean | User$updatedAuditEntitiesArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -1608,6 +1781,8 @@ export namespace Prisma {
     name: "User"
     objects: {
       userRoles: Prisma.$UserRolePayload<ExtArgs>[]
+      createdAuditEntities: Prisma.$AuditEntityPayload<ExtArgs>[]
+      updatedAuditEntities: Prisma.$AuditEntityPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -1984,6 +2159,8 @@ export namespace Prisma {
   export interface Prisma__UserClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     userRoles<T extends User$userRolesArgs<ExtArgs> = {}>(args?: Subset<T, User$userRolesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserRolePayload<ExtArgs>, T, "findMany"> | Null>
+    createdAuditEntities<T extends User$createdAuditEntitiesArgs<ExtArgs> = {}>(args?: Subset<T, User$createdAuditEntitiesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AuditEntityPayload<ExtArgs>, T, "findMany"> | Null>
+    updatedAuditEntities<T extends User$updatedAuditEntitiesArgs<ExtArgs> = {}>(args?: Subset<T, User$updatedAuditEntitiesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AuditEntityPayload<ExtArgs>, T, "findMany"> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2353,6 +2530,46 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: UserRoleScalarFieldEnum | UserRoleScalarFieldEnum[]
+  }
+
+  /**
+   * User.createdAuditEntities
+   */
+  export type User$createdAuditEntitiesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AuditEntity
+     */
+    select?: AuditEntitySelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AuditEntityInclude<ExtArgs> | null
+    where?: AuditEntityWhereInput
+    orderBy?: AuditEntityOrderByWithRelationInput | AuditEntityOrderByWithRelationInput[]
+    cursor?: AuditEntityWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: AuditEntityScalarFieldEnum | AuditEntityScalarFieldEnum[]
+  }
+
+  /**
+   * User.updatedAuditEntities
+   */
+  export type User$updatedAuditEntitiesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AuditEntity
+     */
+    select?: AuditEntitySelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AuditEntityInclude<ExtArgs> | null
+    where?: AuditEntityWhereInput
+    orderBy?: AuditEntityOrderByWithRelationInput | AuditEntityOrderByWithRelationInput[]
+    cursor?: AuditEntityWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: AuditEntityScalarFieldEnum | AuditEntityScalarFieldEnum[]
   }
 
   /**
@@ -6121,6 +6338,1130 @@ export namespace Prisma {
 
 
   /**
+   * Model AuditEntity
+   */
+
+  export type AggregateAuditEntity = {
+    _count: AuditEntityCountAggregateOutputType | null
+    _min: AuditEntityMinAggregateOutputType | null
+    _max: AuditEntityMaxAggregateOutputType | null
+  }
+
+  export type AuditEntityMinAggregateOutputType = {
+    id: string | null
+    code: string | null
+    name: string | null
+    description: string | null
+    entityType: $Enums.AuditEntityType | null
+    status: $Enums.AuditEntityStatus | null
+    parentId: string | null
+    ownerName: string | null
+    responsibleName: string | null
+    classification: string | null
+    createdById: string | null
+    updatedById: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type AuditEntityMaxAggregateOutputType = {
+    id: string | null
+    code: string | null
+    name: string | null
+    description: string | null
+    entityType: $Enums.AuditEntityType | null
+    status: $Enums.AuditEntityStatus | null
+    parentId: string | null
+    ownerName: string | null
+    responsibleName: string | null
+    classification: string | null
+    createdById: string | null
+    updatedById: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type AuditEntityCountAggregateOutputType = {
+    id: number
+    code: number
+    name: number
+    description: number
+    entityType: number
+    status: number
+    parentId: number
+    ownerName: number
+    responsibleName: number
+    classification: number
+    createdById: number
+    updatedById: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type AuditEntityMinAggregateInputType = {
+    id?: true
+    code?: true
+    name?: true
+    description?: true
+    entityType?: true
+    status?: true
+    parentId?: true
+    ownerName?: true
+    responsibleName?: true
+    classification?: true
+    createdById?: true
+    updatedById?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type AuditEntityMaxAggregateInputType = {
+    id?: true
+    code?: true
+    name?: true
+    description?: true
+    entityType?: true
+    status?: true
+    parentId?: true
+    ownerName?: true
+    responsibleName?: true
+    classification?: true
+    createdById?: true
+    updatedById?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type AuditEntityCountAggregateInputType = {
+    id?: true
+    code?: true
+    name?: true
+    description?: true
+    entityType?: true
+    status?: true
+    parentId?: true
+    ownerName?: true
+    responsibleName?: true
+    classification?: true
+    createdById?: true
+    updatedById?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type AuditEntityAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which AuditEntity to aggregate.
+     */
+    where?: AuditEntityWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AuditEntities to fetch.
+     */
+    orderBy?: AuditEntityOrderByWithRelationInput | AuditEntityOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: AuditEntityWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AuditEntities from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AuditEntities.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned AuditEntities
+    **/
+    _count?: true | AuditEntityCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: AuditEntityMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: AuditEntityMaxAggregateInputType
+  }
+
+  export type GetAuditEntityAggregateType<T extends AuditEntityAggregateArgs> = {
+        [P in keyof T & keyof AggregateAuditEntity]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateAuditEntity[P]>
+      : GetScalarType<T[P], AggregateAuditEntity[P]>
+  }
+
+
+
+
+  export type AuditEntityGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AuditEntityWhereInput
+    orderBy?: AuditEntityOrderByWithAggregationInput | AuditEntityOrderByWithAggregationInput[]
+    by: AuditEntityScalarFieldEnum[] | AuditEntityScalarFieldEnum
+    having?: AuditEntityScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: AuditEntityCountAggregateInputType | true
+    _min?: AuditEntityMinAggregateInputType
+    _max?: AuditEntityMaxAggregateInputType
+  }
+
+  export type AuditEntityGroupByOutputType = {
+    id: string
+    code: string
+    name: string
+    description: string | null
+    entityType: $Enums.AuditEntityType
+    status: $Enums.AuditEntityStatus
+    parentId: string | null
+    ownerName: string | null
+    responsibleName: string | null
+    classification: string | null
+    createdById: string | null
+    updatedById: string | null
+    createdAt: Date
+    updatedAt: Date
+    _count: AuditEntityCountAggregateOutputType | null
+    _min: AuditEntityMinAggregateOutputType | null
+    _max: AuditEntityMaxAggregateOutputType | null
+  }
+
+  type GetAuditEntityGroupByPayload<T extends AuditEntityGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<AuditEntityGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof AuditEntityGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], AuditEntityGroupByOutputType[P]>
+            : GetScalarType<T[P], AuditEntityGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type AuditEntitySelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    code?: boolean
+    name?: boolean
+    description?: boolean
+    entityType?: boolean
+    status?: boolean
+    parentId?: boolean
+    ownerName?: boolean
+    responsibleName?: boolean
+    classification?: boolean
+    createdById?: boolean
+    updatedById?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    parent?: boolean | AuditEntity$parentArgs<ExtArgs>
+    children?: boolean | AuditEntity$childrenArgs<ExtArgs>
+    createdBy?: boolean | AuditEntity$createdByArgs<ExtArgs>
+    updatedBy?: boolean | AuditEntity$updatedByArgs<ExtArgs>
+    _count?: boolean | AuditEntityCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["auditEntity"]>
+
+  export type AuditEntitySelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    code?: boolean
+    name?: boolean
+    description?: boolean
+    entityType?: boolean
+    status?: boolean
+    parentId?: boolean
+    ownerName?: boolean
+    responsibleName?: boolean
+    classification?: boolean
+    createdById?: boolean
+    updatedById?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    parent?: boolean | AuditEntity$parentArgs<ExtArgs>
+    createdBy?: boolean | AuditEntity$createdByArgs<ExtArgs>
+    updatedBy?: boolean | AuditEntity$updatedByArgs<ExtArgs>
+  }, ExtArgs["result"]["auditEntity"]>
+
+  export type AuditEntitySelectScalar = {
+    id?: boolean
+    code?: boolean
+    name?: boolean
+    description?: boolean
+    entityType?: boolean
+    status?: boolean
+    parentId?: boolean
+    ownerName?: boolean
+    responsibleName?: boolean
+    classification?: boolean
+    createdById?: boolean
+    updatedById?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type AuditEntityInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    parent?: boolean | AuditEntity$parentArgs<ExtArgs>
+    children?: boolean | AuditEntity$childrenArgs<ExtArgs>
+    createdBy?: boolean | AuditEntity$createdByArgs<ExtArgs>
+    updatedBy?: boolean | AuditEntity$updatedByArgs<ExtArgs>
+    _count?: boolean | AuditEntityCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type AuditEntityIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    parent?: boolean | AuditEntity$parentArgs<ExtArgs>
+    createdBy?: boolean | AuditEntity$createdByArgs<ExtArgs>
+    updatedBy?: boolean | AuditEntity$updatedByArgs<ExtArgs>
+  }
+
+  export type $AuditEntityPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "AuditEntity"
+    objects: {
+      parent: Prisma.$AuditEntityPayload<ExtArgs> | null
+      children: Prisma.$AuditEntityPayload<ExtArgs>[]
+      createdBy: Prisma.$UserPayload<ExtArgs> | null
+      updatedBy: Prisma.$UserPayload<ExtArgs> | null
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      code: string
+      name: string
+      description: string | null
+      entityType: $Enums.AuditEntityType
+      status: $Enums.AuditEntityStatus
+      parentId: string | null
+      ownerName: string | null
+      responsibleName: string | null
+      classification: string | null
+      createdById: string | null
+      updatedById: string | null
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["auditEntity"]>
+    composites: {}
+  }
+
+  type AuditEntityGetPayload<S extends boolean | null | undefined | AuditEntityDefaultArgs> = $Result.GetResult<Prisma.$AuditEntityPayload, S>
+
+  type AuditEntityCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = 
+    Omit<AuditEntityFindManyArgs, 'select' | 'include' | 'distinct'> & {
+      select?: AuditEntityCountAggregateInputType | true
+    }
+
+  export interface AuditEntityDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['AuditEntity'], meta: { name: 'AuditEntity' } }
+    /**
+     * Find zero or one AuditEntity that matches the filter.
+     * @param {AuditEntityFindUniqueArgs} args - Arguments to find a AuditEntity
+     * @example
+     * // Get one AuditEntity
+     * const auditEntity = await prisma.auditEntity.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends AuditEntityFindUniqueArgs>(args: SelectSubset<T, AuditEntityFindUniqueArgs<ExtArgs>>): Prisma__AuditEntityClient<$Result.GetResult<Prisma.$AuditEntityPayload<ExtArgs>, T, "findUnique"> | null, null, ExtArgs>
+
+    /**
+     * Find one AuditEntity that matches the filter or throw an error with `error.code='P2025'` 
+     * if no matches were found.
+     * @param {AuditEntityFindUniqueOrThrowArgs} args - Arguments to find a AuditEntity
+     * @example
+     * // Get one AuditEntity
+     * const auditEntity = await prisma.auditEntity.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends AuditEntityFindUniqueOrThrowArgs>(args: SelectSubset<T, AuditEntityFindUniqueOrThrowArgs<ExtArgs>>): Prisma__AuditEntityClient<$Result.GetResult<Prisma.$AuditEntityPayload<ExtArgs>, T, "findUniqueOrThrow">, never, ExtArgs>
+
+    /**
+     * Find the first AuditEntity that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AuditEntityFindFirstArgs} args - Arguments to find a AuditEntity
+     * @example
+     * // Get one AuditEntity
+     * const auditEntity = await prisma.auditEntity.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends AuditEntityFindFirstArgs>(args?: SelectSubset<T, AuditEntityFindFirstArgs<ExtArgs>>): Prisma__AuditEntityClient<$Result.GetResult<Prisma.$AuditEntityPayload<ExtArgs>, T, "findFirst"> | null, null, ExtArgs>
+
+    /**
+     * Find the first AuditEntity that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AuditEntityFindFirstOrThrowArgs} args - Arguments to find a AuditEntity
+     * @example
+     * // Get one AuditEntity
+     * const auditEntity = await prisma.auditEntity.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends AuditEntityFindFirstOrThrowArgs>(args?: SelectSubset<T, AuditEntityFindFirstOrThrowArgs<ExtArgs>>): Prisma__AuditEntityClient<$Result.GetResult<Prisma.$AuditEntityPayload<ExtArgs>, T, "findFirstOrThrow">, never, ExtArgs>
+
+    /**
+     * Find zero or more AuditEntities that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AuditEntityFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all AuditEntities
+     * const auditEntities = await prisma.auditEntity.findMany()
+     * 
+     * // Get first 10 AuditEntities
+     * const auditEntities = await prisma.auditEntity.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const auditEntityWithIdOnly = await prisma.auditEntity.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends AuditEntityFindManyArgs>(args?: SelectSubset<T, AuditEntityFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AuditEntityPayload<ExtArgs>, T, "findMany">>
+
+    /**
+     * Create a AuditEntity.
+     * @param {AuditEntityCreateArgs} args - Arguments to create a AuditEntity.
+     * @example
+     * // Create one AuditEntity
+     * const AuditEntity = await prisma.auditEntity.create({
+     *   data: {
+     *     // ... data to create a AuditEntity
+     *   }
+     * })
+     * 
+     */
+    create<T extends AuditEntityCreateArgs>(args: SelectSubset<T, AuditEntityCreateArgs<ExtArgs>>): Prisma__AuditEntityClient<$Result.GetResult<Prisma.$AuditEntityPayload<ExtArgs>, T, "create">, never, ExtArgs>
+
+    /**
+     * Create many AuditEntities.
+     * @param {AuditEntityCreateManyArgs} args - Arguments to create many AuditEntities.
+     * @example
+     * // Create many AuditEntities
+     * const auditEntity = await prisma.auditEntity.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends AuditEntityCreateManyArgs>(args?: SelectSubset<T, AuditEntityCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many AuditEntities and returns the data saved in the database.
+     * @param {AuditEntityCreateManyAndReturnArgs} args - Arguments to create many AuditEntities.
+     * @example
+     * // Create many AuditEntities
+     * const auditEntity = await prisma.auditEntity.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many AuditEntities and only return the `id`
+     * const auditEntityWithIdOnly = await prisma.auditEntity.createManyAndReturn({ 
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends AuditEntityCreateManyAndReturnArgs>(args?: SelectSubset<T, AuditEntityCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AuditEntityPayload<ExtArgs>, T, "createManyAndReturn">>
+
+    /**
+     * Delete a AuditEntity.
+     * @param {AuditEntityDeleteArgs} args - Arguments to delete one AuditEntity.
+     * @example
+     * // Delete one AuditEntity
+     * const AuditEntity = await prisma.auditEntity.delete({
+     *   where: {
+     *     // ... filter to delete one AuditEntity
+     *   }
+     * })
+     * 
+     */
+    delete<T extends AuditEntityDeleteArgs>(args: SelectSubset<T, AuditEntityDeleteArgs<ExtArgs>>): Prisma__AuditEntityClient<$Result.GetResult<Prisma.$AuditEntityPayload<ExtArgs>, T, "delete">, never, ExtArgs>
+
+    /**
+     * Update one AuditEntity.
+     * @param {AuditEntityUpdateArgs} args - Arguments to update one AuditEntity.
+     * @example
+     * // Update one AuditEntity
+     * const auditEntity = await prisma.auditEntity.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends AuditEntityUpdateArgs>(args: SelectSubset<T, AuditEntityUpdateArgs<ExtArgs>>): Prisma__AuditEntityClient<$Result.GetResult<Prisma.$AuditEntityPayload<ExtArgs>, T, "update">, never, ExtArgs>
+
+    /**
+     * Delete zero or more AuditEntities.
+     * @param {AuditEntityDeleteManyArgs} args - Arguments to filter AuditEntities to delete.
+     * @example
+     * // Delete a few AuditEntities
+     * const { count } = await prisma.auditEntity.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends AuditEntityDeleteManyArgs>(args?: SelectSubset<T, AuditEntityDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more AuditEntities.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AuditEntityUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many AuditEntities
+     * const auditEntity = await prisma.auditEntity.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends AuditEntityUpdateManyArgs>(args: SelectSubset<T, AuditEntityUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one AuditEntity.
+     * @param {AuditEntityUpsertArgs} args - Arguments to update or create a AuditEntity.
+     * @example
+     * // Update or create a AuditEntity
+     * const auditEntity = await prisma.auditEntity.upsert({
+     *   create: {
+     *     // ... data to create a AuditEntity
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the AuditEntity we want to update
+     *   }
+     * })
+     */
+    upsert<T extends AuditEntityUpsertArgs>(args: SelectSubset<T, AuditEntityUpsertArgs<ExtArgs>>): Prisma__AuditEntityClient<$Result.GetResult<Prisma.$AuditEntityPayload<ExtArgs>, T, "upsert">, never, ExtArgs>
+
+
+    /**
+     * Count the number of AuditEntities.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AuditEntityCountArgs} args - Arguments to filter AuditEntities to count.
+     * @example
+     * // Count the number of AuditEntities
+     * const count = await prisma.auditEntity.count({
+     *   where: {
+     *     // ... the filter for the AuditEntities we want to count
+     *   }
+     * })
+    **/
+    count<T extends AuditEntityCountArgs>(
+      args?: Subset<T, AuditEntityCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], AuditEntityCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a AuditEntity.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AuditEntityAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends AuditEntityAggregateArgs>(args: Subset<T, AuditEntityAggregateArgs>): Prisma.PrismaPromise<GetAuditEntityAggregateType<T>>
+
+    /**
+     * Group by AuditEntity.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AuditEntityGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends AuditEntityGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: AuditEntityGroupByArgs['orderBy'] }
+        : { orderBy?: AuditEntityGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, AuditEntityGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetAuditEntityGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the AuditEntity model
+   */
+  readonly fields: AuditEntityFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for AuditEntity.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__AuditEntityClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    parent<T extends AuditEntity$parentArgs<ExtArgs> = {}>(args?: Subset<T, AuditEntity$parentArgs<ExtArgs>>): Prisma__AuditEntityClient<$Result.GetResult<Prisma.$AuditEntityPayload<ExtArgs>, T, "findUniqueOrThrow"> | null, null, ExtArgs>
+    children<T extends AuditEntity$childrenArgs<ExtArgs> = {}>(args?: Subset<T, AuditEntity$childrenArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AuditEntityPayload<ExtArgs>, T, "findMany"> | Null>
+    createdBy<T extends AuditEntity$createdByArgs<ExtArgs> = {}>(args?: Subset<T, AuditEntity$createdByArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow"> | null, null, ExtArgs>
+    updatedBy<T extends AuditEntity$updatedByArgs<ExtArgs> = {}>(args?: Subset<T, AuditEntity$updatedByArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow"> | null, null, ExtArgs>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the AuditEntity model
+   */ 
+  interface AuditEntityFieldRefs {
+    readonly id: FieldRef<"AuditEntity", 'String'>
+    readonly code: FieldRef<"AuditEntity", 'String'>
+    readonly name: FieldRef<"AuditEntity", 'String'>
+    readonly description: FieldRef<"AuditEntity", 'String'>
+    readonly entityType: FieldRef<"AuditEntity", 'AuditEntityType'>
+    readonly status: FieldRef<"AuditEntity", 'AuditEntityStatus'>
+    readonly parentId: FieldRef<"AuditEntity", 'String'>
+    readonly ownerName: FieldRef<"AuditEntity", 'String'>
+    readonly responsibleName: FieldRef<"AuditEntity", 'String'>
+    readonly classification: FieldRef<"AuditEntity", 'String'>
+    readonly createdById: FieldRef<"AuditEntity", 'String'>
+    readonly updatedById: FieldRef<"AuditEntity", 'String'>
+    readonly createdAt: FieldRef<"AuditEntity", 'DateTime'>
+    readonly updatedAt: FieldRef<"AuditEntity", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * AuditEntity findUnique
+   */
+  export type AuditEntityFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AuditEntity
+     */
+    select?: AuditEntitySelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AuditEntityInclude<ExtArgs> | null
+    /**
+     * Filter, which AuditEntity to fetch.
+     */
+    where: AuditEntityWhereUniqueInput
+  }
+
+  /**
+   * AuditEntity findUniqueOrThrow
+   */
+  export type AuditEntityFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AuditEntity
+     */
+    select?: AuditEntitySelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AuditEntityInclude<ExtArgs> | null
+    /**
+     * Filter, which AuditEntity to fetch.
+     */
+    where: AuditEntityWhereUniqueInput
+  }
+
+  /**
+   * AuditEntity findFirst
+   */
+  export type AuditEntityFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AuditEntity
+     */
+    select?: AuditEntitySelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AuditEntityInclude<ExtArgs> | null
+    /**
+     * Filter, which AuditEntity to fetch.
+     */
+    where?: AuditEntityWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AuditEntities to fetch.
+     */
+    orderBy?: AuditEntityOrderByWithRelationInput | AuditEntityOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for AuditEntities.
+     */
+    cursor?: AuditEntityWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AuditEntities from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AuditEntities.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of AuditEntities.
+     */
+    distinct?: AuditEntityScalarFieldEnum | AuditEntityScalarFieldEnum[]
+  }
+
+  /**
+   * AuditEntity findFirstOrThrow
+   */
+  export type AuditEntityFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AuditEntity
+     */
+    select?: AuditEntitySelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AuditEntityInclude<ExtArgs> | null
+    /**
+     * Filter, which AuditEntity to fetch.
+     */
+    where?: AuditEntityWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AuditEntities to fetch.
+     */
+    orderBy?: AuditEntityOrderByWithRelationInput | AuditEntityOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for AuditEntities.
+     */
+    cursor?: AuditEntityWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AuditEntities from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AuditEntities.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of AuditEntities.
+     */
+    distinct?: AuditEntityScalarFieldEnum | AuditEntityScalarFieldEnum[]
+  }
+
+  /**
+   * AuditEntity findMany
+   */
+  export type AuditEntityFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AuditEntity
+     */
+    select?: AuditEntitySelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AuditEntityInclude<ExtArgs> | null
+    /**
+     * Filter, which AuditEntities to fetch.
+     */
+    where?: AuditEntityWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AuditEntities to fetch.
+     */
+    orderBy?: AuditEntityOrderByWithRelationInput | AuditEntityOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing AuditEntities.
+     */
+    cursor?: AuditEntityWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AuditEntities from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AuditEntities.
+     */
+    skip?: number
+    distinct?: AuditEntityScalarFieldEnum | AuditEntityScalarFieldEnum[]
+  }
+
+  /**
+   * AuditEntity create
+   */
+  export type AuditEntityCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AuditEntity
+     */
+    select?: AuditEntitySelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AuditEntityInclude<ExtArgs> | null
+    /**
+     * The data needed to create a AuditEntity.
+     */
+    data: XOR<AuditEntityCreateInput, AuditEntityUncheckedCreateInput>
+  }
+
+  /**
+   * AuditEntity createMany
+   */
+  export type AuditEntityCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many AuditEntities.
+     */
+    data: AuditEntityCreateManyInput | AuditEntityCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * AuditEntity createManyAndReturn
+   */
+  export type AuditEntityCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AuditEntity
+     */
+    select?: AuditEntitySelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * The data used to create many AuditEntities.
+     */
+    data: AuditEntityCreateManyInput | AuditEntityCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AuditEntityIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * AuditEntity update
+   */
+  export type AuditEntityUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AuditEntity
+     */
+    select?: AuditEntitySelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AuditEntityInclude<ExtArgs> | null
+    /**
+     * The data needed to update a AuditEntity.
+     */
+    data: XOR<AuditEntityUpdateInput, AuditEntityUncheckedUpdateInput>
+    /**
+     * Choose, which AuditEntity to update.
+     */
+    where: AuditEntityWhereUniqueInput
+  }
+
+  /**
+   * AuditEntity updateMany
+   */
+  export type AuditEntityUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update AuditEntities.
+     */
+    data: XOR<AuditEntityUpdateManyMutationInput, AuditEntityUncheckedUpdateManyInput>
+    /**
+     * Filter which AuditEntities to update
+     */
+    where?: AuditEntityWhereInput
+  }
+
+  /**
+   * AuditEntity upsert
+   */
+  export type AuditEntityUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AuditEntity
+     */
+    select?: AuditEntitySelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AuditEntityInclude<ExtArgs> | null
+    /**
+     * The filter to search for the AuditEntity to update in case it exists.
+     */
+    where: AuditEntityWhereUniqueInput
+    /**
+     * In case the AuditEntity found by the `where` argument doesn't exist, create a new AuditEntity with this data.
+     */
+    create: XOR<AuditEntityCreateInput, AuditEntityUncheckedCreateInput>
+    /**
+     * In case the AuditEntity was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<AuditEntityUpdateInput, AuditEntityUncheckedUpdateInput>
+  }
+
+  /**
+   * AuditEntity delete
+   */
+  export type AuditEntityDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AuditEntity
+     */
+    select?: AuditEntitySelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AuditEntityInclude<ExtArgs> | null
+    /**
+     * Filter which AuditEntity to delete.
+     */
+    where: AuditEntityWhereUniqueInput
+  }
+
+  /**
+   * AuditEntity deleteMany
+   */
+  export type AuditEntityDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which AuditEntities to delete
+     */
+    where?: AuditEntityWhereInput
+  }
+
+  /**
+   * AuditEntity.parent
+   */
+  export type AuditEntity$parentArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AuditEntity
+     */
+    select?: AuditEntitySelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AuditEntityInclude<ExtArgs> | null
+    where?: AuditEntityWhereInput
+  }
+
+  /**
+   * AuditEntity.children
+   */
+  export type AuditEntity$childrenArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AuditEntity
+     */
+    select?: AuditEntitySelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AuditEntityInclude<ExtArgs> | null
+    where?: AuditEntityWhereInput
+    orderBy?: AuditEntityOrderByWithRelationInput | AuditEntityOrderByWithRelationInput[]
+    cursor?: AuditEntityWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: AuditEntityScalarFieldEnum | AuditEntityScalarFieldEnum[]
+  }
+
+  /**
+   * AuditEntity.createdBy
+   */
+  export type AuditEntity$createdByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: UserSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    where?: UserWhereInput
+  }
+
+  /**
+   * AuditEntity.updatedBy
+   */
+  export type AuditEntity$updatedByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: UserSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    where?: UserWhereInput
+  }
+
+  /**
+   * AuditEntity without action
+   */
+  export type AuditEntityDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AuditEntity
+     */
+    select?: AuditEntitySelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AuditEntityInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Model AuditLog
    */
 
@@ -7111,6 +8452,26 @@ export namespace Prisma {
   export type RolePermissionScalarFieldEnum = (typeof RolePermissionScalarFieldEnum)[keyof typeof RolePermissionScalarFieldEnum]
 
 
+  export const AuditEntityScalarFieldEnum: {
+    id: 'id',
+    code: 'code',
+    name: 'name',
+    description: 'description',
+    entityType: 'entityType',
+    status: 'status',
+    parentId: 'parentId',
+    ownerName: 'ownerName',
+    responsibleName: 'responsibleName',
+    classification: 'classification',
+    createdById: 'createdById',
+    updatedById: 'updatedById',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type AuditEntityScalarFieldEnum = (typeof AuditEntityScalarFieldEnum)[keyof typeof AuditEntityScalarFieldEnum]
+
+
   export const AuditLogScalarFieldEnum: {
     id: 'id',
     action: 'action',
@@ -7208,6 +8569,34 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'AuditEntityType'
+   */
+  export type EnumAuditEntityTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AuditEntityType'>
+    
+
+
+  /**
+   * Reference to a field of type 'AuditEntityType[]'
+   */
+  export type ListEnumAuditEntityTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AuditEntityType[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'AuditEntityStatus'
+   */
+  export type EnumAuditEntityStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AuditEntityStatus'>
+    
+
+
+  /**
+   * Reference to a field of type 'AuditEntityStatus[]'
+   */
+  export type ListEnumAuditEntityStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AuditEntityStatus[]'>
+    
+
+
+  /**
    * Reference to a field of type 'Json'
    */
   export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Json'>
@@ -7245,6 +8634,8 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
     userRoles?: UserRoleListRelationFilter
+    createdAuditEntities?: AuditEntityListRelationFilter
+    updatedAuditEntities?: AuditEntityListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -7258,6 +8649,8 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     userRoles?: UserRoleOrderByRelationAggregateInput
+    createdAuditEntities?: AuditEntityOrderByRelationAggregateInput
+    updatedAuditEntities?: AuditEntityOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -7274,6 +8667,8 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
     userRoles?: UserRoleListRelationFilter
+    createdAuditEntities?: AuditEntityListRelationFilter
+    updatedAuditEntities?: AuditEntityListRelationFilter
   }, "id" | "email">
 
   export type UserOrderByWithAggregationInput = {
@@ -7517,6 +8912,115 @@ export namespace Prisma {
     assignedAt?: DateTimeWithAggregatesFilter<"RolePermission"> | Date | string
   }
 
+  export type AuditEntityWhereInput = {
+    AND?: AuditEntityWhereInput | AuditEntityWhereInput[]
+    OR?: AuditEntityWhereInput[]
+    NOT?: AuditEntityWhereInput | AuditEntityWhereInput[]
+    id?: UuidFilter<"AuditEntity"> | string
+    code?: StringFilter<"AuditEntity"> | string
+    name?: StringFilter<"AuditEntity"> | string
+    description?: StringNullableFilter<"AuditEntity"> | string | null
+    entityType?: EnumAuditEntityTypeFilter<"AuditEntity"> | $Enums.AuditEntityType
+    status?: EnumAuditEntityStatusFilter<"AuditEntity"> | $Enums.AuditEntityStatus
+    parentId?: UuidNullableFilter<"AuditEntity"> | string | null
+    ownerName?: StringNullableFilter<"AuditEntity"> | string | null
+    responsibleName?: StringNullableFilter<"AuditEntity"> | string | null
+    classification?: StringNullableFilter<"AuditEntity"> | string | null
+    createdById?: UuidNullableFilter<"AuditEntity"> | string | null
+    updatedById?: UuidNullableFilter<"AuditEntity"> | string | null
+    createdAt?: DateTimeFilter<"AuditEntity"> | Date | string
+    updatedAt?: DateTimeFilter<"AuditEntity"> | Date | string
+    parent?: XOR<AuditEntityNullableRelationFilter, AuditEntityWhereInput> | null
+    children?: AuditEntityListRelationFilter
+    createdBy?: XOR<UserNullableRelationFilter, UserWhereInput> | null
+    updatedBy?: XOR<UserNullableRelationFilter, UserWhereInput> | null
+  }
+
+  export type AuditEntityOrderByWithRelationInput = {
+    id?: SortOrder
+    code?: SortOrder
+    name?: SortOrder
+    description?: SortOrderInput | SortOrder
+    entityType?: SortOrder
+    status?: SortOrder
+    parentId?: SortOrderInput | SortOrder
+    ownerName?: SortOrderInput | SortOrder
+    responsibleName?: SortOrderInput | SortOrder
+    classification?: SortOrderInput | SortOrder
+    createdById?: SortOrderInput | SortOrder
+    updatedById?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    parent?: AuditEntityOrderByWithRelationInput
+    children?: AuditEntityOrderByRelationAggregateInput
+    createdBy?: UserOrderByWithRelationInput
+    updatedBy?: UserOrderByWithRelationInput
+  }
+
+  export type AuditEntityWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    code?: string
+    AND?: AuditEntityWhereInput | AuditEntityWhereInput[]
+    OR?: AuditEntityWhereInput[]
+    NOT?: AuditEntityWhereInput | AuditEntityWhereInput[]
+    name?: StringFilter<"AuditEntity"> | string
+    description?: StringNullableFilter<"AuditEntity"> | string | null
+    entityType?: EnumAuditEntityTypeFilter<"AuditEntity"> | $Enums.AuditEntityType
+    status?: EnumAuditEntityStatusFilter<"AuditEntity"> | $Enums.AuditEntityStatus
+    parentId?: UuidNullableFilter<"AuditEntity"> | string | null
+    ownerName?: StringNullableFilter<"AuditEntity"> | string | null
+    responsibleName?: StringNullableFilter<"AuditEntity"> | string | null
+    classification?: StringNullableFilter<"AuditEntity"> | string | null
+    createdById?: UuidNullableFilter<"AuditEntity"> | string | null
+    updatedById?: UuidNullableFilter<"AuditEntity"> | string | null
+    createdAt?: DateTimeFilter<"AuditEntity"> | Date | string
+    updatedAt?: DateTimeFilter<"AuditEntity"> | Date | string
+    parent?: XOR<AuditEntityNullableRelationFilter, AuditEntityWhereInput> | null
+    children?: AuditEntityListRelationFilter
+    createdBy?: XOR<UserNullableRelationFilter, UserWhereInput> | null
+    updatedBy?: XOR<UserNullableRelationFilter, UserWhereInput> | null
+  }, "id" | "code">
+
+  export type AuditEntityOrderByWithAggregationInput = {
+    id?: SortOrder
+    code?: SortOrder
+    name?: SortOrder
+    description?: SortOrderInput | SortOrder
+    entityType?: SortOrder
+    status?: SortOrder
+    parentId?: SortOrderInput | SortOrder
+    ownerName?: SortOrderInput | SortOrder
+    responsibleName?: SortOrderInput | SortOrder
+    classification?: SortOrderInput | SortOrder
+    createdById?: SortOrderInput | SortOrder
+    updatedById?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: AuditEntityCountOrderByAggregateInput
+    _max?: AuditEntityMaxOrderByAggregateInput
+    _min?: AuditEntityMinOrderByAggregateInput
+  }
+
+  export type AuditEntityScalarWhereWithAggregatesInput = {
+    AND?: AuditEntityScalarWhereWithAggregatesInput | AuditEntityScalarWhereWithAggregatesInput[]
+    OR?: AuditEntityScalarWhereWithAggregatesInput[]
+    NOT?: AuditEntityScalarWhereWithAggregatesInput | AuditEntityScalarWhereWithAggregatesInput[]
+    id?: UuidWithAggregatesFilter<"AuditEntity"> | string
+    code?: StringWithAggregatesFilter<"AuditEntity"> | string
+    name?: StringWithAggregatesFilter<"AuditEntity"> | string
+    description?: StringNullableWithAggregatesFilter<"AuditEntity"> | string | null
+    entityType?: EnumAuditEntityTypeWithAggregatesFilter<"AuditEntity"> | $Enums.AuditEntityType
+    status?: EnumAuditEntityStatusWithAggregatesFilter<"AuditEntity"> | $Enums.AuditEntityStatus
+    parentId?: UuidNullableWithAggregatesFilter<"AuditEntity"> | string | null
+    ownerName?: StringNullableWithAggregatesFilter<"AuditEntity"> | string | null
+    responsibleName?: StringNullableWithAggregatesFilter<"AuditEntity"> | string | null
+    classification?: StringNullableWithAggregatesFilter<"AuditEntity"> | string | null
+    createdById?: UuidNullableWithAggregatesFilter<"AuditEntity"> | string | null
+    updatedById?: UuidNullableWithAggregatesFilter<"AuditEntity"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"AuditEntity"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"AuditEntity"> | Date | string
+  }
+
   export type AuditLogWhereInput = {
     AND?: AuditLogWhereInput | AuditLogWhereInput[]
     OR?: AuditLogWhereInput[]
@@ -7600,6 +9104,8 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     userRoles?: UserRoleCreateNestedManyWithoutUserInput
+    createdAuditEntities?: AuditEntityCreateNestedManyWithoutCreatedByInput
+    updatedAuditEntities?: AuditEntityCreateNestedManyWithoutUpdatedByInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -7613,6 +9119,8 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     userRoles?: UserRoleUncheckedCreateNestedManyWithoutUserInput
+    createdAuditEntities?: AuditEntityUncheckedCreateNestedManyWithoutCreatedByInput
+    updatedAuditEntities?: AuditEntityUncheckedCreateNestedManyWithoutUpdatedByInput
   }
 
   export type UserUpdateInput = {
@@ -7626,6 +9134,8 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     userRoles?: UserRoleUpdateManyWithoutUserNestedInput
+    createdAuditEntities?: AuditEntityUpdateManyWithoutCreatedByNestedInput
+    updatedAuditEntities?: AuditEntityUpdateManyWithoutUpdatedByNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -7639,6 +9149,8 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     userRoles?: UserRoleUncheckedUpdateManyWithoutUserNestedInput
+    createdAuditEntities?: AuditEntityUncheckedUpdateManyWithoutCreatedByNestedInput
+    updatedAuditEntities?: AuditEntityUncheckedUpdateManyWithoutUpdatedByNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -7881,6 +9393,126 @@ export namespace Prisma {
     assignedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type AuditEntityCreateInput = {
+    id?: string
+    code: string
+    name: string
+    description?: string | null
+    entityType: $Enums.AuditEntityType
+    status?: $Enums.AuditEntityStatus
+    ownerName?: string | null
+    responsibleName?: string | null
+    classification?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    parent?: AuditEntityCreateNestedOneWithoutChildrenInput
+    children?: AuditEntityCreateNestedManyWithoutParentInput
+    createdBy?: UserCreateNestedOneWithoutCreatedAuditEntitiesInput
+    updatedBy?: UserCreateNestedOneWithoutUpdatedAuditEntitiesInput
+  }
+
+  export type AuditEntityUncheckedCreateInput = {
+    id?: string
+    code: string
+    name: string
+    description?: string | null
+    entityType: $Enums.AuditEntityType
+    status?: $Enums.AuditEntityStatus
+    parentId?: string | null
+    ownerName?: string | null
+    responsibleName?: string | null
+    classification?: string | null
+    createdById?: string | null
+    updatedById?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    children?: AuditEntityUncheckedCreateNestedManyWithoutParentInput
+  }
+
+  export type AuditEntityUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    code?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    entityType?: EnumAuditEntityTypeFieldUpdateOperationsInput | $Enums.AuditEntityType
+    status?: EnumAuditEntityStatusFieldUpdateOperationsInput | $Enums.AuditEntityStatus
+    ownerName?: NullableStringFieldUpdateOperationsInput | string | null
+    responsibleName?: NullableStringFieldUpdateOperationsInput | string | null
+    classification?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    parent?: AuditEntityUpdateOneWithoutChildrenNestedInput
+    children?: AuditEntityUpdateManyWithoutParentNestedInput
+    createdBy?: UserUpdateOneWithoutCreatedAuditEntitiesNestedInput
+    updatedBy?: UserUpdateOneWithoutUpdatedAuditEntitiesNestedInput
+  }
+
+  export type AuditEntityUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    code?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    entityType?: EnumAuditEntityTypeFieldUpdateOperationsInput | $Enums.AuditEntityType
+    status?: EnumAuditEntityStatusFieldUpdateOperationsInput | $Enums.AuditEntityStatus
+    parentId?: NullableStringFieldUpdateOperationsInput | string | null
+    ownerName?: NullableStringFieldUpdateOperationsInput | string | null
+    responsibleName?: NullableStringFieldUpdateOperationsInput | string | null
+    classification?: NullableStringFieldUpdateOperationsInput | string | null
+    createdById?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedById?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    children?: AuditEntityUncheckedUpdateManyWithoutParentNestedInput
+  }
+
+  export type AuditEntityCreateManyInput = {
+    id?: string
+    code: string
+    name: string
+    description?: string | null
+    entityType: $Enums.AuditEntityType
+    status?: $Enums.AuditEntityStatus
+    parentId?: string | null
+    ownerName?: string | null
+    responsibleName?: string | null
+    classification?: string | null
+    createdById?: string | null
+    updatedById?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type AuditEntityUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    code?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    entityType?: EnumAuditEntityTypeFieldUpdateOperationsInput | $Enums.AuditEntityType
+    status?: EnumAuditEntityStatusFieldUpdateOperationsInput | $Enums.AuditEntityStatus
+    ownerName?: NullableStringFieldUpdateOperationsInput | string | null
+    responsibleName?: NullableStringFieldUpdateOperationsInput | string | null
+    classification?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AuditEntityUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    code?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    entityType?: EnumAuditEntityTypeFieldUpdateOperationsInput | $Enums.AuditEntityType
+    status?: EnumAuditEntityStatusFieldUpdateOperationsInput | $Enums.AuditEntityStatus
+    parentId?: NullableStringFieldUpdateOperationsInput | string | null
+    ownerName?: NullableStringFieldUpdateOperationsInput | string | null
+    responsibleName?: NullableStringFieldUpdateOperationsInput | string | null
+    classification?: NullableStringFieldUpdateOperationsInput | string | null
+    createdById?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedById?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type AuditLogCreateInput = {
     id?: string
     action: string
@@ -8025,12 +9657,22 @@ export namespace Prisma {
     none?: UserRoleWhereInput
   }
 
+  export type AuditEntityListRelationFilter = {
+    every?: AuditEntityWhereInput
+    some?: AuditEntityWhereInput
+    none?: AuditEntityWhereInput
+  }
+
   export type SortOrderInput = {
     sort: SortOrder
     nulls?: NullsOrder
   }
 
   export type UserRoleOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type AuditEntityOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -8291,6 +9933,20 @@ export namespace Prisma {
     assignedAt?: SortOrder
   }
 
+  export type EnumAuditEntityTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.AuditEntityType | EnumAuditEntityTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.AuditEntityType[] | ListEnumAuditEntityTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.AuditEntityType[] | ListEnumAuditEntityTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumAuditEntityTypeFilter<$PrismaModel> | $Enums.AuditEntityType
+  }
+
+  export type EnumAuditEntityStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.AuditEntityStatus | EnumAuditEntityStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.AuditEntityStatus[] | ListEnumAuditEntityStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.AuditEntityStatus[] | ListEnumAuditEntityStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumAuditEntityStatusFilter<$PrismaModel> | $Enums.AuditEntityStatus
+  }
+
   export type UuidNullableFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel> | null
     in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
@@ -8301,6 +9957,102 @@ export namespace Prisma {
     gte?: string | StringFieldRefInput<$PrismaModel>
     mode?: QueryMode
     not?: NestedUuidNullableFilter<$PrismaModel> | string | null
+  }
+
+  export type AuditEntityNullableRelationFilter = {
+    is?: AuditEntityWhereInput | null
+    isNot?: AuditEntityWhereInput | null
+  }
+
+  export type UserNullableRelationFilter = {
+    is?: UserWhereInput | null
+    isNot?: UserWhereInput | null
+  }
+
+  export type AuditEntityCountOrderByAggregateInput = {
+    id?: SortOrder
+    code?: SortOrder
+    name?: SortOrder
+    description?: SortOrder
+    entityType?: SortOrder
+    status?: SortOrder
+    parentId?: SortOrder
+    ownerName?: SortOrder
+    responsibleName?: SortOrder
+    classification?: SortOrder
+    createdById?: SortOrder
+    updatedById?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type AuditEntityMaxOrderByAggregateInput = {
+    id?: SortOrder
+    code?: SortOrder
+    name?: SortOrder
+    description?: SortOrder
+    entityType?: SortOrder
+    status?: SortOrder
+    parentId?: SortOrder
+    ownerName?: SortOrder
+    responsibleName?: SortOrder
+    classification?: SortOrder
+    createdById?: SortOrder
+    updatedById?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type AuditEntityMinOrderByAggregateInput = {
+    id?: SortOrder
+    code?: SortOrder
+    name?: SortOrder
+    description?: SortOrder
+    entityType?: SortOrder
+    status?: SortOrder
+    parentId?: SortOrder
+    ownerName?: SortOrder
+    responsibleName?: SortOrder
+    classification?: SortOrder
+    createdById?: SortOrder
+    updatedById?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type EnumAuditEntityTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.AuditEntityType | EnumAuditEntityTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.AuditEntityType[] | ListEnumAuditEntityTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.AuditEntityType[] | ListEnumAuditEntityTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumAuditEntityTypeWithAggregatesFilter<$PrismaModel> | $Enums.AuditEntityType
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumAuditEntityTypeFilter<$PrismaModel>
+    _max?: NestedEnumAuditEntityTypeFilter<$PrismaModel>
+  }
+
+  export type EnumAuditEntityStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.AuditEntityStatus | EnumAuditEntityStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.AuditEntityStatus[] | ListEnumAuditEntityStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.AuditEntityStatus[] | ListEnumAuditEntityStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumAuditEntityStatusWithAggregatesFilter<$PrismaModel> | $Enums.AuditEntityStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumAuditEntityStatusFilter<$PrismaModel>
+    _max?: NestedEnumAuditEntityStatusFilter<$PrismaModel>
+  }
+
+  export type UuidNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    mode?: QueryMode
+    not?: NestedUuidNullableWithAggregatesFilter<$PrismaModel> | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedStringNullableFilter<$PrismaModel>
+    _max?: NestedStringNullableFilter<$PrismaModel>
   }
   export type JsonNullableFilter<$PrismaModel = never> = 
     | PatchUndefined<
@@ -8358,21 +10110,6 @@ export namespace Prisma {
     success?: SortOrder
     createdAt?: SortOrder
   }
-
-  export type UuidNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: string | StringFieldRefInput<$PrismaModel> | null
-    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    lt?: string | StringFieldRefInput<$PrismaModel>
-    lte?: string | StringFieldRefInput<$PrismaModel>
-    gt?: string | StringFieldRefInput<$PrismaModel>
-    gte?: string | StringFieldRefInput<$PrismaModel>
-    mode?: QueryMode
-    not?: NestedUuidNullableWithAggregatesFilter<$PrismaModel> | string | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedStringNullableFilter<$PrismaModel>
-    _max?: NestedStringNullableFilter<$PrismaModel>
-  }
   export type JsonNullableWithAggregatesFilter<$PrismaModel = never> = 
     | PatchUndefined<
         Either<Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, 'path'>>,
@@ -8406,11 +10143,39 @@ export namespace Prisma {
     connect?: UserRoleWhereUniqueInput | UserRoleWhereUniqueInput[]
   }
 
+  export type AuditEntityCreateNestedManyWithoutCreatedByInput = {
+    create?: XOR<AuditEntityCreateWithoutCreatedByInput, AuditEntityUncheckedCreateWithoutCreatedByInput> | AuditEntityCreateWithoutCreatedByInput[] | AuditEntityUncheckedCreateWithoutCreatedByInput[]
+    connectOrCreate?: AuditEntityCreateOrConnectWithoutCreatedByInput | AuditEntityCreateOrConnectWithoutCreatedByInput[]
+    createMany?: AuditEntityCreateManyCreatedByInputEnvelope
+    connect?: AuditEntityWhereUniqueInput | AuditEntityWhereUniqueInput[]
+  }
+
+  export type AuditEntityCreateNestedManyWithoutUpdatedByInput = {
+    create?: XOR<AuditEntityCreateWithoutUpdatedByInput, AuditEntityUncheckedCreateWithoutUpdatedByInput> | AuditEntityCreateWithoutUpdatedByInput[] | AuditEntityUncheckedCreateWithoutUpdatedByInput[]
+    connectOrCreate?: AuditEntityCreateOrConnectWithoutUpdatedByInput | AuditEntityCreateOrConnectWithoutUpdatedByInput[]
+    createMany?: AuditEntityCreateManyUpdatedByInputEnvelope
+    connect?: AuditEntityWhereUniqueInput | AuditEntityWhereUniqueInput[]
+  }
+
   export type UserRoleUncheckedCreateNestedManyWithoutUserInput = {
     create?: XOR<UserRoleCreateWithoutUserInput, UserRoleUncheckedCreateWithoutUserInput> | UserRoleCreateWithoutUserInput[] | UserRoleUncheckedCreateWithoutUserInput[]
     connectOrCreate?: UserRoleCreateOrConnectWithoutUserInput | UserRoleCreateOrConnectWithoutUserInput[]
     createMany?: UserRoleCreateManyUserInputEnvelope
     connect?: UserRoleWhereUniqueInput | UserRoleWhereUniqueInput[]
+  }
+
+  export type AuditEntityUncheckedCreateNestedManyWithoutCreatedByInput = {
+    create?: XOR<AuditEntityCreateWithoutCreatedByInput, AuditEntityUncheckedCreateWithoutCreatedByInput> | AuditEntityCreateWithoutCreatedByInput[] | AuditEntityUncheckedCreateWithoutCreatedByInput[]
+    connectOrCreate?: AuditEntityCreateOrConnectWithoutCreatedByInput | AuditEntityCreateOrConnectWithoutCreatedByInput[]
+    createMany?: AuditEntityCreateManyCreatedByInputEnvelope
+    connect?: AuditEntityWhereUniqueInput | AuditEntityWhereUniqueInput[]
+  }
+
+  export type AuditEntityUncheckedCreateNestedManyWithoutUpdatedByInput = {
+    create?: XOR<AuditEntityCreateWithoutUpdatedByInput, AuditEntityUncheckedCreateWithoutUpdatedByInput> | AuditEntityCreateWithoutUpdatedByInput[] | AuditEntityUncheckedCreateWithoutUpdatedByInput[]
+    connectOrCreate?: AuditEntityCreateOrConnectWithoutUpdatedByInput | AuditEntityCreateOrConnectWithoutUpdatedByInput[]
+    createMany?: AuditEntityCreateManyUpdatedByInputEnvelope
+    connect?: AuditEntityWhereUniqueInput | AuditEntityWhereUniqueInput[]
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -8443,6 +10208,34 @@ export namespace Prisma {
     deleteMany?: UserRoleScalarWhereInput | UserRoleScalarWhereInput[]
   }
 
+  export type AuditEntityUpdateManyWithoutCreatedByNestedInput = {
+    create?: XOR<AuditEntityCreateWithoutCreatedByInput, AuditEntityUncheckedCreateWithoutCreatedByInput> | AuditEntityCreateWithoutCreatedByInput[] | AuditEntityUncheckedCreateWithoutCreatedByInput[]
+    connectOrCreate?: AuditEntityCreateOrConnectWithoutCreatedByInput | AuditEntityCreateOrConnectWithoutCreatedByInput[]
+    upsert?: AuditEntityUpsertWithWhereUniqueWithoutCreatedByInput | AuditEntityUpsertWithWhereUniqueWithoutCreatedByInput[]
+    createMany?: AuditEntityCreateManyCreatedByInputEnvelope
+    set?: AuditEntityWhereUniqueInput | AuditEntityWhereUniqueInput[]
+    disconnect?: AuditEntityWhereUniqueInput | AuditEntityWhereUniqueInput[]
+    delete?: AuditEntityWhereUniqueInput | AuditEntityWhereUniqueInput[]
+    connect?: AuditEntityWhereUniqueInput | AuditEntityWhereUniqueInput[]
+    update?: AuditEntityUpdateWithWhereUniqueWithoutCreatedByInput | AuditEntityUpdateWithWhereUniqueWithoutCreatedByInput[]
+    updateMany?: AuditEntityUpdateManyWithWhereWithoutCreatedByInput | AuditEntityUpdateManyWithWhereWithoutCreatedByInput[]
+    deleteMany?: AuditEntityScalarWhereInput | AuditEntityScalarWhereInput[]
+  }
+
+  export type AuditEntityUpdateManyWithoutUpdatedByNestedInput = {
+    create?: XOR<AuditEntityCreateWithoutUpdatedByInput, AuditEntityUncheckedCreateWithoutUpdatedByInput> | AuditEntityCreateWithoutUpdatedByInput[] | AuditEntityUncheckedCreateWithoutUpdatedByInput[]
+    connectOrCreate?: AuditEntityCreateOrConnectWithoutUpdatedByInput | AuditEntityCreateOrConnectWithoutUpdatedByInput[]
+    upsert?: AuditEntityUpsertWithWhereUniqueWithoutUpdatedByInput | AuditEntityUpsertWithWhereUniqueWithoutUpdatedByInput[]
+    createMany?: AuditEntityCreateManyUpdatedByInputEnvelope
+    set?: AuditEntityWhereUniqueInput | AuditEntityWhereUniqueInput[]
+    disconnect?: AuditEntityWhereUniqueInput | AuditEntityWhereUniqueInput[]
+    delete?: AuditEntityWhereUniqueInput | AuditEntityWhereUniqueInput[]
+    connect?: AuditEntityWhereUniqueInput | AuditEntityWhereUniqueInput[]
+    update?: AuditEntityUpdateWithWhereUniqueWithoutUpdatedByInput | AuditEntityUpdateWithWhereUniqueWithoutUpdatedByInput[]
+    updateMany?: AuditEntityUpdateManyWithWhereWithoutUpdatedByInput | AuditEntityUpdateManyWithWhereWithoutUpdatedByInput[]
+    deleteMany?: AuditEntityScalarWhereInput | AuditEntityScalarWhereInput[]
+  }
+
   export type UserRoleUncheckedUpdateManyWithoutUserNestedInput = {
     create?: XOR<UserRoleCreateWithoutUserInput, UserRoleUncheckedCreateWithoutUserInput> | UserRoleCreateWithoutUserInput[] | UserRoleUncheckedCreateWithoutUserInput[]
     connectOrCreate?: UserRoleCreateOrConnectWithoutUserInput | UserRoleCreateOrConnectWithoutUserInput[]
@@ -8455,6 +10248,34 @@ export namespace Prisma {
     update?: UserRoleUpdateWithWhereUniqueWithoutUserInput | UserRoleUpdateWithWhereUniqueWithoutUserInput[]
     updateMany?: UserRoleUpdateManyWithWhereWithoutUserInput | UserRoleUpdateManyWithWhereWithoutUserInput[]
     deleteMany?: UserRoleScalarWhereInput | UserRoleScalarWhereInput[]
+  }
+
+  export type AuditEntityUncheckedUpdateManyWithoutCreatedByNestedInput = {
+    create?: XOR<AuditEntityCreateWithoutCreatedByInput, AuditEntityUncheckedCreateWithoutCreatedByInput> | AuditEntityCreateWithoutCreatedByInput[] | AuditEntityUncheckedCreateWithoutCreatedByInput[]
+    connectOrCreate?: AuditEntityCreateOrConnectWithoutCreatedByInput | AuditEntityCreateOrConnectWithoutCreatedByInput[]
+    upsert?: AuditEntityUpsertWithWhereUniqueWithoutCreatedByInput | AuditEntityUpsertWithWhereUniqueWithoutCreatedByInput[]
+    createMany?: AuditEntityCreateManyCreatedByInputEnvelope
+    set?: AuditEntityWhereUniqueInput | AuditEntityWhereUniqueInput[]
+    disconnect?: AuditEntityWhereUniqueInput | AuditEntityWhereUniqueInput[]
+    delete?: AuditEntityWhereUniqueInput | AuditEntityWhereUniqueInput[]
+    connect?: AuditEntityWhereUniqueInput | AuditEntityWhereUniqueInput[]
+    update?: AuditEntityUpdateWithWhereUniqueWithoutCreatedByInput | AuditEntityUpdateWithWhereUniqueWithoutCreatedByInput[]
+    updateMany?: AuditEntityUpdateManyWithWhereWithoutCreatedByInput | AuditEntityUpdateManyWithWhereWithoutCreatedByInput[]
+    deleteMany?: AuditEntityScalarWhereInput | AuditEntityScalarWhereInput[]
+  }
+
+  export type AuditEntityUncheckedUpdateManyWithoutUpdatedByNestedInput = {
+    create?: XOR<AuditEntityCreateWithoutUpdatedByInput, AuditEntityUncheckedCreateWithoutUpdatedByInput> | AuditEntityCreateWithoutUpdatedByInput[] | AuditEntityUncheckedCreateWithoutUpdatedByInput[]
+    connectOrCreate?: AuditEntityCreateOrConnectWithoutUpdatedByInput | AuditEntityCreateOrConnectWithoutUpdatedByInput[]
+    upsert?: AuditEntityUpsertWithWhereUniqueWithoutUpdatedByInput | AuditEntityUpsertWithWhereUniqueWithoutUpdatedByInput[]
+    createMany?: AuditEntityCreateManyUpdatedByInputEnvelope
+    set?: AuditEntityWhereUniqueInput | AuditEntityWhereUniqueInput[]
+    disconnect?: AuditEntityWhereUniqueInput | AuditEntityWhereUniqueInput[]
+    delete?: AuditEntityWhereUniqueInput | AuditEntityWhereUniqueInput[]
+    connect?: AuditEntityWhereUniqueInput | AuditEntityWhereUniqueInput[]
+    update?: AuditEntityUpdateWithWhereUniqueWithoutUpdatedByInput | AuditEntityUpdateWithWhereUniqueWithoutUpdatedByInput[]
+    updateMany?: AuditEntityUpdateManyWithWhereWithoutUpdatedByInput | AuditEntityUpdateManyWithWhereWithoutUpdatedByInput[]
+    deleteMany?: AuditEntityScalarWhereInput | AuditEntityScalarWhereInput[]
   }
 
   export type UserRoleCreateNestedManyWithoutRoleInput = {
@@ -8643,6 +10464,104 @@ export namespace Prisma {
     update?: XOR<XOR<PermissionUpdateToOneWithWhereWithoutRolePermissionsInput, PermissionUpdateWithoutRolePermissionsInput>, PermissionUncheckedUpdateWithoutRolePermissionsInput>
   }
 
+  export type AuditEntityCreateNestedOneWithoutChildrenInput = {
+    create?: XOR<AuditEntityCreateWithoutChildrenInput, AuditEntityUncheckedCreateWithoutChildrenInput>
+    connectOrCreate?: AuditEntityCreateOrConnectWithoutChildrenInput
+    connect?: AuditEntityWhereUniqueInput
+  }
+
+  export type AuditEntityCreateNestedManyWithoutParentInput = {
+    create?: XOR<AuditEntityCreateWithoutParentInput, AuditEntityUncheckedCreateWithoutParentInput> | AuditEntityCreateWithoutParentInput[] | AuditEntityUncheckedCreateWithoutParentInput[]
+    connectOrCreate?: AuditEntityCreateOrConnectWithoutParentInput | AuditEntityCreateOrConnectWithoutParentInput[]
+    createMany?: AuditEntityCreateManyParentInputEnvelope
+    connect?: AuditEntityWhereUniqueInput | AuditEntityWhereUniqueInput[]
+  }
+
+  export type UserCreateNestedOneWithoutCreatedAuditEntitiesInput = {
+    create?: XOR<UserCreateWithoutCreatedAuditEntitiesInput, UserUncheckedCreateWithoutCreatedAuditEntitiesInput>
+    connectOrCreate?: UserCreateOrConnectWithoutCreatedAuditEntitiesInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type UserCreateNestedOneWithoutUpdatedAuditEntitiesInput = {
+    create?: XOR<UserCreateWithoutUpdatedAuditEntitiesInput, UserUncheckedCreateWithoutUpdatedAuditEntitiesInput>
+    connectOrCreate?: UserCreateOrConnectWithoutUpdatedAuditEntitiesInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type AuditEntityUncheckedCreateNestedManyWithoutParentInput = {
+    create?: XOR<AuditEntityCreateWithoutParentInput, AuditEntityUncheckedCreateWithoutParentInput> | AuditEntityCreateWithoutParentInput[] | AuditEntityUncheckedCreateWithoutParentInput[]
+    connectOrCreate?: AuditEntityCreateOrConnectWithoutParentInput | AuditEntityCreateOrConnectWithoutParentInput[]
+    createMany?: AuditEntityCreateManyParentInputEnvelope
+    connect?: AuditEntityWhereUniqueInput | AuditEntityWhereUniqueInput[]
+  }
+
+  export type EnumAuditEntityTypeFieldUpdateOperationsInput = {
+    set?: $Enums.AuditEntityType
+  }
+
+  export type EnumAuditEntityStatusFieldUpdateOperationsInput = {
+    set?: $Enums.AuditEntityStatus
+  }
+
+  export type AuditEntityUpdateOneWithoutChildrenNestedInput = {
+    create?: XOR<AuditEntityCreateWithoutChildrenInput, AuditEntityUncheckedCreateWithoutChildrenInput>
+    connectOrCreate?: AuditEntityCreateOrConnectWithoutChildrenInput
+    upsert?: AuditEntityUpsertWithoutChildrenInput
+    disconnect?: AuditEntityWhereInput | boolean
+    delete?: AuditEntityWhereInput | boolean
+    connect?: AuditEntityWhereUniqueInput
+    update?: XOR<XOR<AuditEntityUpdateToOneWithWhereWithoutChildrenInput, AuditEntityUpdateWithoutChildrenInput>, AuditEntityUncheckedUpdateWithoutChildrenInput>
+  }
+
+  export type AuditEntityUpdateManyWithoutParentNestedInput = {
+    create?: XOR<AuditEntityCreateWithoutParentInput, AuditEntityUncheckedCreateWithoutParentInput> | AuditEntityCreateWithoutParentInput[] | AuditEntityUncheckedCreateWithoutParentInput[]
+    connectOrCreate?: AuditEntityCreateOrConnectWithoutParentInput | AuditEntityCreateOrConnectWithoutParentInput[]
+    upsert?: AuditEntityUpsertWithWhereUniqueWithoutParentInput | AuditEntityUpsertWithWhereUniqueWithoutParentInput[]
+    createMany?: AuditEntityCreateManyParentInputEnvelope
+    set?: AuditEntityWhereUniqueInput | AuditEntityWhereUniqueInput[]
+    disconnect?: AuditEntityWhereUniqueInput | AuditEntityWhereUniqueInput[]
+    delete?: AuditEntityWhereUniqueInput | AuditEntityWhereUniqueInput[]
+    connect?: AuditEntityWhereUniqueInput | AuditEntityWhereUniqueInput[]
+    update?: AuditEntityUpdateWithWhereUniqueWithoutParentInput | AuditEntityUpdateWithWhereUniqueWithoutParentInput[]
+    updateMany?: AuditEntityUpdateManyWithWhereWithoutParentInput | AuditEntityUpdateManyWithWhereWithoutParentInput[]
+    deleteMany?: AuditEntityScalarWhereInput | AuditEntityScalarWhereInput[]
+  }
+
+  export type UserUpdateOneWithoutCreatedAuditEntitiesNestedInput = {
+    create?: XOR<UserCreateWithoutCreatedAuditEntitiesInput, UserUncheckedCreateWithoutCreatedAuditEntitiesInput>
+    connectOrCreate?: UserCreateOrConnectWithoutCreatedAuditEntitiesInput
+    upsert?: UserUpsertWithoutCreatedAuditEntitiesInput
+    disconnect?: UserWhereInput | boolean
+    delete?: UserWhereInput | boolean
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutCreatedAuditEntitiesInput, UserUpdateWithoutCreatedAuditEntitiesInput>, UserUncheckedUpdateWithoutCreatedAuditEntitiesInput>
+  }
+
+  export type UserUpdateOneWithoutUpdatedAuditEntitiesNestedInput = {
+    create?: XOR<UserCreateWithoutUpdatedAuditEntitiesInput, UserUncheckedCreateWithoutUpdatedAuditEntitiesInput>
+    connectOrCreate?: UserCreateOrConnectWithoutUpdatedAuditEntitiesInput
+    upsert?: UserUpsertWithoutUpdatedAuditEntitiesInput
+    disconnect?: UserWhereInput | boolean
+    delete?: UserWhereInput | boolean
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutUpdatedAuditEntitiesInput, UserUpdateWithoutUpdatedAuditEntitiesInput>, UserUncheckedUpdateWithoutUpdatedAuditEntitiesInput>
+  }
+
+  export type AuditEntityUncheckedUpdateManyWithoutParentNestedInput = {
+    create?: XOR<AuditEntityCreateWithoutParentInput, AuditEntityUncheckedCreateWithoutParentInput> | AuditEntityCreateWithoutParentInput[] | AuditEntityUncheckedCreateWithoutParentInput[]
+    connectOrCreate?: AuditEntityCreateOrConnectWithoutParentInput | AuditEntityCreateOrConnectWithoutParentInput[]
+    upsert?: AuditEntityUpsertWithWhereUniqueWithoutParentInput | AuditEntityUpsertWithWhereUniqueWithoutParentInput[]
+    createMany?: AuditEntityCreateManyParentInputEnvelope
+    set?: AuditEntityWhereUniqueInput | AuditEntityWhereUniqueInput[]
+    disconnect?: AuditEntityWhereUniqueInput | AuditEntityWhereUniqueInput[]
+    delete?: AuditEntityWhereUniqueInput | AuditEntityWhereUniqueInput[]
+    connect?: AuditEntityWhereUniqueInput | AuditEntityWhereUniqueInput[]
+    update?: AuditEntityUpdateWithWhereUniqueWithoutParentInput | AuditEntityUpdateWithWhereUniqueWithoutParentInput[]
+    updateMany?: AuditEntityUpdateManyWithWhereWithoutParentInput | AuditEntityUpdateManyWithWhereWithoutParentInput[]
+    deleteMany?: AuditEntityScalarWhereInput | AuditEntityScalarWhereInput[]
+  }
+
   export type NestedUuidFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -8815,6 +10734,20 @@ export namespace Prisma {
     _max?: NestedStringNullableFilter<$PrismaModel>
   }
 
+  export type NestedEnumAuditEntityTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.AuditEntityType | EnumAuditEntityTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.AuditEntityType[] | ListEnumAuditEntityTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.AuditEntityType[] | ListEnumAuditEntityTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumAuditEntityTypeFilter<$PrismaModel> | $Enums.AuditEntityType
+  }
+
+  export type NestedEnumAuditEntityStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.AuditEntityStatus | EnumAuditEntityStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.AuditEntityStatus[] | ListEnumAuditEntityStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.AuditEntityStatus[] | ListEnumAuditEntityStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumAuditEntityStatusFilter<$PrismaModel> | $Enums.AuditEntityStatus
+  }
+
   export type NestedUuidNullableFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel> | null
     in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
@@ -8824,6 +10757,26 @@ export namespace Prisma {
     gt?: string | StringFieldRefInput<$PrismaModel>
     gte?: string | StringFieldRefInput<$PrismaModel>
     not?: NestedUuidNullableFilter<$PrismaModel> | string | null
+  }
+
+  export type NestedEnumAuditEntityTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.AuditEntityType | EnumAuditEntityTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.AuditEntityType[] | ListEnumAuditEntityTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.AuditEntityType[] | ListEnumAuditEntityTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumAuditEntityTypeWithAggregatesFilter<$PrismaModel> | $Enums.AuditEntityType
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumAuditEntityTypeFilter<$PrismaModel>
+    _max?: NestedEnumAuditEntityTypeFilter<$PrismaModel>
+  }
+
+  export type NestedEnumAuditEntityStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.AuditEntityStatus | EnumAuditEntityStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.AuditEntityStatus[] | ListEnumAuditEntityStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.AuditEntityStatus[] | ListEnumAuditEntityStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumAuditEntityStatusWithAggregatesFilter<$PrismaModel> | $Enums.AuditEntityStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumAuditEntityStatusFilter<$PrismaModel>
+    _max?: NestedEnumAuditEntityStatusFilter<$PrismaModel>
   }
 
   export type NestedUuidNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -8882,6 +10835,94 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type AuditEntityCreateWithoutCreatedByInput = {
+    id?: string
+    code: string
+    name: string
+    description?: string | null
+    entityType: $Enums.AuditEntityType
+    status?: $Enums.AuditEntityStatus
+    ownerName?: string | null
+    responsibleName?: string | null
+    classification?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    parent?: AuditEntityCreateNestedOneWithoutChildrenInput
+    children?: AuditEntityCreateNestedManyWithoutParentInput
+    updatedBy?: UserCreateNestedOneWithoutUpdatedAuditEntitiesInput
+  }
+
+  export type AuditEntityUncheckedCreateWithoutCreatedByInput = {
+    id?: string
+    code: string
+    name: string
+    description?: string | null
+    entityType: $Enums.AuditEntityType
+    status?: $Enums.AuditEntityStatus
+    parentId?: string | null
+    ownerName?: string | null
+    responsibleName?: string | null
+    classification?: string | null
+    updatedById?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    children?: AuditEntityUncheckedCreateNestedManyWithoutParentInput
+  }
+
+  export type AuditEntityCreateOrConnectWithoutCreatedByInput = {
+    where: AuditEntityWhereUniqueInput
+    create: XOR<AuditEntityCreateWithoutCreatedByInput, AuditEntityUncheckedCreateWithoutCreatedByInput>
+  }
+
+  export type AuditEntityCreateManyCreatedByInputEnvelope = {
+    data: AuditEntityCreateManyCreatedByInput | AuditEntityCreateManyCreatedByInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type AuditEntityCreateWithoutUpdatedByInput = {
+    id?: string
+    code: string
+    name: string
+    description?: string | null
+    entityType: $Enums.AuditEntityType
+    status?: $Enums.AuditEntityStatus
+    ownerName?: string | null
+    responsibleName?: string | null
+    classification?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    parent?: AuditEntityCreateNestedOneWithoutChildrenInput
+    children?: AuditEntityCreateNestedManyWithoutParentInput
+    createdBy?: UserCreateNestedOneWithoutCreatedAuditEntitiesInput
+  }
+
+  export type AuditEntityUncheckedCreateWithoutUpdatedByInput = {
+    id?: string
+    code: string
+    name: string
+    description?: string | null
+    entityType: $Enums.AuditEntityType
+    status?: $Enums.AuditEntityStatus
+    parentId?: string | null
+    ownerName?: string | null
+    responsibleName?: string | null
+    classification?: string | null
+    createdById?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    children?: AuditEntityUncheckedCreateNestedManyWithoutParentInput
+  }
+
+  export type AuditEntityCreateOrConnectWithoutUpdatedByInput = {
+    where: AuditEntityWhereUniqueInput
+    create: XOR<AuditEntityCreateWithoutUpdatedByInput, AuditEntityUncheckedCreateWithoutUpdatedByInput>
+  }
+
+  export type AuditEntityCreateManyUpdatedByInputEnvelope = {
+    data: AuditEntityCreateManyUpdatedByInput | AuditEntityCreateManyUpdatedByInput[]
+    skipDuplicates?: boolean
+  }
+
   export type UserRoleUpsertWithWhereUniqueWithoutUserInput = {
     where: UserRoleWhereUniqueInput
     update: XOR<UserRoleUpdateWithoutUserInput, UserRoleUncheckedUpdateWithoutUserInput>
@@ -8905,6 +10946,58 @@ export namespace Prisma {
     userId?: UuidFilter<"UserRole"> | string
     roleId?: UuidFilter<"UserRole"> | string
     assignedAt?: DateTimeFilter<"UserRole"> | Date | string
+  }
+
+  export type AuditEntityUpsertWithWhereUniqueWithoutCreatedByInput = {
+    where: AuditEntityWhereUniqueInput
+    update: XOR<AuditEntityUpdateWithoutCreatedByInput, AuditEntityUncheckedUpdateWithoutCreatedByInput>
+    create: XOR<AuditEntityCreateWithoutCreatedByInput, AuditEntityUncheckedCreateWithoutCreatedByInput>
+  }
+
+  export type AuditEntityUpdateWithWhereUniqueWithoutCreatedByInput = {
+    where: AuditEntityWhereUniqueInput
+    data: XOR<AuditEntityUpdateWithoutCreatedByInput, AuditEntityUncheckedUpdateWithoutCreatedByInput>
+  }
+
+  export type AuditEntityUpdateManyWithWhereWithoutCreatedByInput = {
+    where: AuditEntityScalarWhereInput
+    data: XOR<AuditEntityUpdateManyMutationInput, AuditEntityUncheckedUpdateManyWithoutCreatedByInput>
+  }
+
+  export type AuditEntityScalarWhereInput = {
+    AND?: AuditEntityScalarWhereInput | AuditEntityScalarWhereInput[]
+    OR?: AuditEntityScalarWhereInput[]
+    NOT?: AuditEntityScalarWhereInput | AuditEntityScalarWhereInput[]
+    id?: UuidFilter<"AuditEntity"> | string
+    code?: StringFilter<"AuditEntity"> | string
+    name?: StringFilter<"AuditEntity"> | string
+    description?: StringNullableFilter<"AuditEntity"> | string | null
+    entityType?: EnumAuditEntityTypeFilter<"AuditEntity"> | $Enums.AuditEntityType
+    status?: EnumAuditEntityStatusFilter<"AuditEntity"> | $Enums.AuditEntityStatus
+    parentId?: UuidNullableFilter<"AuditEntity"> | string | null
+    ownerName?: StringNullableFilter<"AuditEntity"> | string | null
+    responsibleName?: StringNullableFilter<"AuditEntity"> | string | null
+    classification?: StringNullableFilter<"AuditEntity"> | string | null
+    createdById?: UuidNullableFilter<"AuditEntity"> | string | null
+    updatedById?: UuidNullableFilter<"AuditEntity"> | string | null
+    createdAt?: DateTimeFilter<"AuditEntity"> | Date | string
+    updatedAt?: DateTimeFilter<"AuditEntity"> | Date | string
+  }
+
+  export type AuditEntityUpsertWithWhereUniqueWithoutUpdatedByInput = {
+    where: AuditEntityWhereUniqueInput
+    update: XOR<AuditEntityUpdateWithoutUpdatedByInput, AuditEntityUncheckedUpdateWithoutUpdatedByInput>
+    create: XOR<AuditEntityCreateWithoutUpdatedByInput, AuditEntityUncheckedCreateWithoutUpdatedByInput>
+  }
+
+  export type AuditEntityUpdateWithWhereUniqueWithoutUpdatedByInput = {
+    where: AuditEntityWhereUniqueInput
+    data: XOR<AuditEntityUpdateWithoutUpdatedByInput, AuditEntityUncheckedUpdateWithoutUpdatedByInput>
+  }
+
+  export type AuditEntityUpdateManyWithWhereWithoutUpdatedByInput = {
+    where: AuditEntityScalarWhereInput
+    data: XOR<AuditEntityUpdateManyMutationInput, AuditEntityUncheckedUpdateManyWithoutUpdatedByInput>
   }
 
   export type UserRoleCreateWithoutRoleInput = {
@@ -9034,6 +11127,8 @@ export namespace Prisma {
     lastLoginAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    createdAuditEntities?: AuditEntityCreateNestedManyWithoutCreatedByInput
+    updatedAuditEntities?: AuditEntityCreateNestedManyWithoutUpdatedByInput
   }
 
   export type UserUncheckedCreateWithoutUserRolesInput = {
@@ -9046,6 +11141,8 @@ export namespace Prisma {
     lastLoginAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    createdAuditEntities?: AuditEntityUncheckedCreateNestedManyWithoutCreatedByInput
+    updatedAuditEntities?: AuditEntityUncheckedCreateNestedManyWithoutUpdatedByInput
   }
 
   export type UserCreateOrConnectWithoutUserRolesInput = {
@@ -9097,6 +11194,8 @@ export namespace Prisma {
     lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAuditEntities?: AuditEntityUpdateManyWithoutCreatedByNestedInput
+    updatedAuditEntities?: AuditEntityUpdateManyWithoutUpdatedByNestedInput
   }
 
   export type UserUncheckedUpdateWithoutUserRolesInput = {
@@ -9109,6 +11208,8 @@ export namespace Prisma {
     lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAuditEntities?: AuditEntityUncheckedUpdateManyWithoutCreatedByNestedInput
+    updatedAuditEntities?: AuditEntityUncheckedUpdateManyWithoutUpdatedByNestedInput
   }
 
   export type RoleUpsertWithoutUserRolesInput = {
@@ -9240,9 +11341,329 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type AuditEntityCreateWithoutChildrenInput = {
+    id?: string
+    code: string
+    name: string
+    description?: string | null
+    entityType: $Enums.AuditEntityType
+    status?: $Enums.AuditEntityStatus
+    ownerName?: string | null
+    responsibleName?: string | null
+    classification?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    parent?: AuditEntityCreateNestedOneWithoutChildrenInput
+    createdBy?: UserCreateNestedOneWithoutCreatedAuditEntitiesInput
+    updatedBy?: UserCreateNestedOneWithoutUpdatedAuditEntitiesInput
+  }
+
+  export type AuditEntityUncheckedCreateWithoutChildrenInput = {
+    id?: string
+    code: string
+    name: string
+    description?: string | null
+    entityType: $Enums.AuditEntityType
+    status?: $Enums.AuditEntityStatus
+    parentId?: string | null
+    ownerName?: string | null
+    responsibleName?: string | null
+    classification?: string | null
+    createdById?: string | null
+    updatedById?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type AuditEntityCreateOrConnectWithoutChildrenInput = {
+    where: AuditEntityWhereUniqueInput
+    create: XOR<AuditEntityCreateWithoutChildrenInput, AuditEntityUncheckedCreateWithoutChildrenInput>
+  }
+
+  export type AuditEntityCreateWithoutParentInput = {
+    id?: string
+    code: string
+    name: string
+    description?: string | null
+    entityType: $Enums.AuditEntityType
+    status?: $Enums.AuditEntityStatus
+    ownerName?: string | null
+    responsibleName?: string | null
+    classification?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    children?: AuditEntityCreateNestedManyWithoutParentInput
+    createdBy?: UserCreateNestedOneWithoutCreatedAuditEntitiesInput
+    updatedBy?: UserCreateNestedOneWithoutUpdatedAuditEntitiesInput
+  }
+
+  export type AuditEntityUncheckedCreateWithoutParentInput = {
+    id?: string
+    code: string
+    name: string
+    description?: string | null
+    entityType: $Enums.AuditEntityType
+    status?: $Enums.AuditEntityStatus
+    ownerName?: string | null
+    responsibleName?: string | null
+    classification?: string | null
+    createdById?: string | null
+    updatedById?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    children?: AuditEntityUncheckedCreateNestedManyWithoutParentInput
+  }
+
+  export type AuditEntityCreateOrConnectWithoutParentInput = {
+    where: AuditEntityWhereUniqueInput
+    create: XOR<AuditEntityCreateWithoutParentInput, AuditEntityUncheckedCreateWithoutParentInput>
+  }
+
+  export type AuditEntityCreateManyParentInputEnvelope = {
+    data: AuditEntityCreateManyParentInput | AuditEntityCreateManyParentInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type UserCreateWithoutCreatedAuditEntitiesInput = {
+    id?: string
+    firstName: string
+    lastName: string
+    email: string
+    passwordHash: string
+    isActive?: boolean
+    lastLoginAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    userRoles?: UserRoleCreateNestedManyWithoutUserInput
+    updatedAuditEntities?: AuditEntityCreateNestedManyWithoutUpdatedByInput
+  }
+
+  export type UserUncheckedCreateWithoutCreatedAuditEntitiesInput = {
+    id?: string
+    firstName: string
+    lastName: string
+    email: string
+    passwordHash: string
+    isActive?: boolean
+    lastLoginAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    userRoles?: UserRoleUncheckedCreateNestedManyWithoutUserInput
+    updatedAuditEntities?: AuditEntityUncheckedCreateNestedManyWithoutUpdatedByInput
+  }
+
+  export type UserCreateOrConnectWithoutCreatedAuditEntitiesInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutCreatedAuditEntitiesInput, UserUncheckedCreateWithoutCreatedAuditEntitiesInput>
+  }
+
+  export type UserCreateWithoutUpdatedAuditEntitiesInput = {
+    id?: string
+    firstName: string
+    lastName: string
+    email: string
+    passwordHash: string
+    isActive?: boolean
+    lastLoginAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    userRoles?: UserRoleCreateNestedManyWithoutUserInput
+    createdAuditEntities?: AuditEntityCreateNestedManyWithoutCreatedByInput
+  }
+
+  export type UserUncheckedCreateWithoutUpdatedAuditEntitiesInput = {
+    id?: string
+    firstName: string
+    lastName: string
+    email: string
+    passwordHash: string
+    isActive?: boolean
+    lastLoginAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    userRoles?: UserRoleUncheckedCreateNestedManyWithoutUserInput
+    createdAuditEntities?: AuditEntityUncheckedCreateNestedManyWithoutCreatedByInput
+  }
+
+  export type UserCreateOrConnectWithoutUpdatedAuditEntitiesInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutUpdatedAuditEntitiesInput, UserUncheckedCreateWithoutUpdatedAuditEntitiesInput>
+  }
+
+  export type AuditEntityUpsertWithoutChildrenInput = {
+    update: XOR<AuditEntityUpdateWithoutChildrenInput, AuditEntityUncheckedUpdateWithoutChildrenInput>
+    create: XOR<AuditEntityCreateWithoutChildrenInput, AuditEntityUncheckedCreateWithoutChildrenInput>
+    where?: AuditEntityWhereInput
+  }
+
+  export type AuditEntityUpdateToOneWithWhereWithoutChildrenInput = {
+    where?: AuditEntityWhereInput
+    data: XOR<AuditEntityUpdateWithoutChildrenInput, AuditEntityUncheckedUpdateWithoutChildrenInput>
+  }
+
+  export type AuditEntityUpdateWithoutChildrenInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    code?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    entityType?: EnumAuditEntityTypeFieldUpdateOperationsInput | $Enums.AuditEntityType
+    status?: EnumAuditEntityStatusFieldUpdateOperationsInput | $Enums.AuditEntityStatus
+    ownerName?: NullableStringFieldUpdateOperationsInput | string | null
+    responsibleName?: NullableStringFieldUpdateOperationsInput | string | null
+    classification?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    parent?: AuditEntityUpdateOneWithoutChildrenNestedInput
+    createdBy?: UserUpdateOneWithoutCreatedAuditEntitiesNestedInput
+    updatedBy?: UserUpdateOneWithoutUpdatedAuditEntitiesNestedInput
+  }
+
+  export type AuditEntityUncheckedUpdateWithoutChildrenInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    code?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    entityType?: EnumAuditEntityTypeFieldUpdateOperationsInput | $Enums.AuditEntityType
+    status?: EnumAuditEntityStatusFieldUpdateOperationsInput | $Enums.AuditEntityStatus
+    parentId?: NullableStringFieldUpdateOperationsInput | string | null
+    ownerName?: NullableStringFieldUpdateOperationsInput | string | null
+    responsibleName?: NullableStringFieldUpdateOperationsInput | string | null
+    classification?: NullableStringFieldUpdateOperationsInput | string | null
+    createdById?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedById?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AuditEntityUpsertWithWhereUniqueWithoutParentInput = {
+    where: AuditEntityWhereUniqueInput
+    update: XOR<AuditEntityUpdateWithoutParentInput, AuditEntityUncheckedUpdateWithoutParentInput>
+    create: XOR<AuditEntityCreateWithoutParentInput, AuditEntityUncheckedCreateWithoutParentInput>
+  }
+
+  export type AuditEntityUpdateWithWhereUniqueWithoutParentInput = {
+    where: AuditEntityWhereUniqueInput
+    data: XOR<AuditEntityUpdateWithoutParentInput, AuditEntityUncheckedUpdateWithoutParentInput>
+  }
+
+  export type AuditEntityUpdateManyWithWhereWithoutParentInput = {
+    where: AuditEntityScalarWhereInput
+    data: XOR<AuditEntityUpdateManyMutationInput, AuditEntityUncheckedUpdateManyWithoutParentInput>
+  }
+
+  export type UserUpsertWithoutCreatedAuditEntitiesInput = {
+    update: XOR<UserUpdateWithoutCreatedAuditEntitiesInput, UserUncheckedUpdateWithoutCreatedAuditEntitiesInput>
+    create: XOR<UserCreateWithoutCreatedAuditEntitiesInput, UserUncheckedCreateWithoutCreatedAuditEntitiesInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutCreatedAuditEntitiesInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutCreatedAuditEntitiesInput, UserUncheckedUpdateWithoutCreatedAuditEntitiesInput>
+  }
+
+  export type UserUpdateWithoutCreatedAuditEntitiesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    firstName?: StringFieldUpdateOperationsInput | string
+    lastName?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    userRoles?: UserRoleUpdateManyWithoutUserNestedInput
+    updatedAuditEntities?: AuditEntityUpdateManyWithoutUpdatedByNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutCreatedAuditEntitiesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    firstName?: StringFieldUpdateOperationsInput | string
+    lastName?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    userRoles?: UserRoleUncheckedUpdateManyWithoutUserNestedInput
+    updatedAuditEntities?: AuditEntityUncheckedUpdateManyWithoutUpdatedByNestedInput
+  }
+
+  export type UserUpsertWithoutUpdatedAuditEntitiesInput = {
+    update: XOR<UserUpdateWithoutUpdatedAuditEntitiesInput, UserUncheckedUpdateWithoutUpdatedAuditEntitiesInput>
+    create: XOR<UserCreateWithoutUpdatedAuditEntitiesInput, UserUncheckedCreateWithoutUpdatedAuditEntitiesInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutUpdatedAuditEntitiesInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutUpdatedAuditEntitiesInput, UserUncheckedUpdateWithoutUpdatedAuditEntitiesInput>
+  }
+
+  export type UserUpdateWithoutUpdatedAuditEntitiesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    firstName?: StringFieldUpdateOperationsInput | string
+    lastName?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    userRoles?: UserRoleUpdateManyWithoutUserNestedInput
+    createdAuditEntities?: AuditEntityUpdateManyWithoutCreatedByNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutUpdatedAuditEntitiesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    firstName?: StringFieldUpdateOperationsInput | string
+    lastName?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    userRoles?: UserRoleUncheckedUpdateManyWithoutUserNestedInput
+    createdAuditEntities?: AuditEntityUncheckedUpdateManyWithoutCreatedByNestedInput
+  }
+
   export type UserRoleCreateManyUserInput = {
     roleId: string
     assignedAt?: Date | string
+  }
+
+  export type AuditEntityCreateManyCreatedByInput = {
+    id?: string
+    code: string
+    name: string
+    description?: string | null
+    entityType: $Enums.AuditEntityType
+    status?: $Enums.AuditEntityStatus
+    parentId?: string | null
+    ownerName?: string | null
+    responsibleName?: string | null
+    classification?: string | null
+    updatedById?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type AuditEntityCreateManyUpdatedByInput = {
+    id?: string
+    code: string
+    name: string
+    description?: string | null
+    entityType: $Enums.AuditEntityType
+    status?: $Enums.AuditEntityStatus
+    parentId?: string | null
+    ownerName?: string | null
+    responsibleName?: string | null
+    classification?: string | null
+    createdById?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
   }
 
   export type UserRoleUpdateWithoutUserInput = {
@@ -9258,6 +11679,106 @@ export namespace Prisma {
   export type UserRoleUncheckedUpdateManyWithoutUserInput = {
     roleId?: StringFieldUpdateOperationsInput | string
     assignedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AuditEntityUpdateWithoutCreatedByInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    code?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    entityType?: EnumAuditEntityTypeFieldUpdateOperationsInput | $Enums.AuditEntityType
+    status?: EnumAuditEntityStatusFieldUpdateOperationsInput | $Enums.AuditEntityStatus
+    ownerName?: NullableStringFieldUpdateOperationsInput | string | null
+    responsibleName?: NullableStringFieldUpdateOperationsInput | string | null
+    classification?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    parent?: AuditEntityUpdateOneWithoutChildrenNestedInput
+    children?: AuditEntityUpdateManyWithoutParentNestedInput
+    updatedBy?: UserUpdateOneWithoutUpdatedAuditEntitiesNestedInput
+  }
+
+  export type AuditEntityUncheckedUpdateWithoutCreatedByInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    code?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    entityType?: EnumAuditEntityTypeFieldUpdateOperationsInput | $Enums.AuditEntityType
+    status?: EnumAuditEntityStatusFieldUpdateOperationsInput | $Enums.AuditEntityStatus
+    parentId?: NullableStringFieldUpdateOperationsInput | string | null
+    ownerName?: NullableStringFieldUpdateOperationsInput | string | null
+    responsibleName?: NullableStringFieldUpdateOperationsInput | string | null
+    classification?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedById?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    children?: AuditEntityUncheckedUpdateManyWithoutParentNestedInput
+  }
+
+  export type AuditEntityUncheckedUpdateManyWithoutCreatedByInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    code?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    entityType?: EnumAuditEntityTypeFieldUpdateOperationsInput | $Enums.AuditEntityType
+    status?: EnumAuditEntityStatusFieldUpdateOperationsInput | $Enums.AuditEntityStatus
+    parentId?: NullableStringFieldUpdateOperationsInput | string | null
+    ownerName?: NullableStringFieldUpdateOperationsInput | string | null
+    responsibleName?: NullableStringFieldUpdateOperationsInput | string | null
+    classification?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedById?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AuditEntityUpdateWithoutUpdatedByInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    code?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    entityType?: EnumAuditEntityTypeFieldUpdateOperationsInput | $Enums.AuditEntityType
+    status?: EnumAuditEntityStatusFieldUpdateOperationsInput | $Enums.AuditEntityStatus
+    ownerName?: NullableStringFieldUpdateOperationsInput | string | null
+    responsibleName?: NullableStringFieldUpdateOperationsInput | string | null
+    classification?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    parent?: AuditEntityUpdateOneWithoutChildrenNestedInput
+    children?: AuditEntityUpdateManyWithoutParentNestedInput
+    createdBy?: UserUpdateOneWithoutCreatedAuditEntitiesNestedInput
+  }
+
+  export type AuditEntityUncheckedUpdateWithoutUpdatedByInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    code?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    entityType?: EnumAuditEntityTypeFieldUpdateOperationsInput | $Enums.AuditEntityType
+    status?: EnumAuditEntityStatusFieldUpdateOperationsInput | $Enums.AuditEntityStatus
+    parentId?: NullableStringFieldUpdateOperationsInput | string | null
+    ownerName?: NullableStringFieldUpdateOperationsInput | string | null
+    responsibleName?: NullableStringFieldUpdateOperationsInput | string | null
+    classification?: NullableStringFieldUpdateOperationsInput | string | null
+    createdById?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    children?: AuditEntityUncheckedUpdateManyWithoutParentNestedInput
+  }
+
+  export type AuditEntityUncheckedUpdateManyWithoutUpdatedByInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    code?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    entityType?: EnumAuditEntityTypeFieldUpdateOperationsInput | $Enums.AuditEntityType
+    status?: EnumAuditEntityStatusFieldUpdateOperationsInput | $Enums.AuditEntityStatus
+    parentId?: NullableStringFieldUpdateOperationsInput | string | null
+    ownerName?: NullableStringFieldUpdateOperationsInput | string | null
+    responsibleName?: NullableStringFieldUpdateOperationsInput | string | null
+    classification?: NullableStringFieldUpdateOperationsInput | string | null
+    createdById?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type UserRoleCreateManyRoleInput = {
@@ -9320,6 +11841,72 @@ export namespace Prisma {
     assignedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type AuditEntityCreateManyParentInput = {
+    id?: string
+    code: string
+    name: string
+    description?: string | null
+    entityType: $Enums.AuditEntityType
+    status?: $Enums.AuditEntityStatus
+    ownerName?: string | null
+    responsibleName?: string | null
+    classification?: string | null
+    createdById?: string | null
+    updatedById?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type AuditEntityUpdateWithoutParentInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    code?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    entityType?: EnumAuditEntityTypeFieldUpdateOperationsInput | $Enums.AuditEntityType
+    status?: EnumAuditEntityStatusFieldUpdateOperationsInput | $Enums.AuditEntityStatus
+    ownerName?: NullableStringFieldUpdateOperationsInput | string | null
+    responsibleName?: NullableStringFieldUpdateOperationsInput | string | null
+    classification?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    children?: AuditEntityUpdateManyWithoutParentNestedInput
+    createdBy?: UserUpdateOneWithoutCreatedAuditEntitiesNestedInput
+    updatedBy?: UserUpdateOneWithoutUpdatedAuditEntitiesNestedInput
+  }
+
+  export type AuditEntityUncheckedUpdateWithoutParentInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    code?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    entityType?: EnumAuditEntityTypeFieldUpdateOperationsInput | $Enums.AuditEntityType
+    status?: EnumAuditEntityStatusFieldUpdateOperationsInput | $Enums.AuditEntityStatus
+    ownerName?: NullableStringFieldUpdateOperationsInput | string | null
+    responsibleName?: NullableStringFieldUpdateOperationsInput | string | null
+    classification?: NullableStringFieldUpdateOperationsInput | string | null
+    createdById?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedById?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    children?: AuditEntityUncheckedUpdateManyWithoutParentNestedInput
+  }
+
+  export type AuditEntityUncheckedUpdateManyWithoutParentInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    code?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    entityType?: EnumAuditEntityTypeFieldUpdateOperationsInput | $Enums.AuditEntityType
+    status?: EnumAuditEntityStatusFieldUpdateOperationsInput | $Enums.AuditEntityStatus
+    ownerName?: NullableStringFieldUpdateOperationsInput | string | null
+    responsibleName?: NullableStringFieldUpdateOperationsInput | string | null
+    classification?: NullableStringFieldUpdateOperationsInput | string | null
+    createdById?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedById?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
 
 
   /**
@@ -9337,6 +11924,10 @@ export namespace Prisma {
      * @deprecated Use PermissionCountOutputTypeDefaultArgs instead
      */
     export type PermissionCountOutputTypeArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = PermissionCountOutputTypeDefaultArgs<ExtArgs>
+    /**
+     * @deprecated Use AuditEntityCountOutputTypeDefaultArgs instead
+     */
+    export type AuditEntityCountOutputTypeArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = AuditEntityCountOutputTypeDefaultArgs<ExtArgs>
     /**
      * @deprecated Use UserDefaultArgs instead
      */
@@ -9357,6 +11948,10 @@ export namespace Prisma {
      * @deprecated Use RolePermissionDefaultArgs instead
      */
     export type RolePermissionArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = RolePermissionDefaultArgs<ExtArgs>
+    /**
+     * @deprecated Use AuditEntityDefaultArgs instead
+     */
+    export type AuditEntityArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = AuditEntityDefaultArgs<ExtArgs>
     /**
      * @deprecated Use AuditLogDefaultArgs instead
      */

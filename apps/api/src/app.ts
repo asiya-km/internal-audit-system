@@ -11,6 +11,7 @@ import healthRoutes from './routes/health.routes.js';
 import authRoutes from './routes/auth.routes.js';
 import adminRoutes from './routes/admin.routes.js';
 import dashboardRoutes from './routes/dashboard.routes.js';
+import auditEntityRoutes from './routes/audit-entity.routes.js';
 
 function buildHelmetConfig() {
   if (config.isProduction) {
@@ -78,6 +79,7 @@ export function createApp(): express.Express {
   app.use('/api/auth', authRoutes);
   app.use('/api/admin', adminRoutes);
   app.use('/api/dashboard', dashboardRoutes);
+  app.use('/api/audit-universe', auditEntityRoutes);
 
   // ---- 404 + error handling (must be last) ----
   app.use(notFoundHandler);
